@@ -1,0 +1,2 @@
+.gnupg/*.key
+.ssh/*.key

@@ -1,0 +1,239 @@
+#!/usr/bin/env bash
+#
+# Bootstrap script for setting up a new OSX machine
+#
+# This should be idempotent so it can be run multiple times.
+#
+
+# load helper functions
+for file in ~/.{functions,}; do
+    [ -r "$file" ] && [ -f "$file" ] && source "$file"
+done
+unset file
+
+if ask "Do you want to decrypt encrypted files" Y; then
+
+    # decrypt files
+    yadm decrypt;
+
+    # fix permissions on decrypted files
+
+    # private gpg
+    if [[ -f ~/.gnupg/private.key ]] ; then 
+         chmod 600 ~/.gnupg/private.key;
+    fi
+
+    # private ssh
+    if [[ -f ~/.ssh/id_ed25519.key ]] ; then 
+         chmod 600 ~/.ssh/id_ed25519.key;
+    fi
+fi
+
+echo_ok "Install starting. You may be asked for your password (for sudo)."
+
+# requires xcode and tools!
+xcode-select -p || {
+    echo_error "XCode must be installed! (run xcode-select --install)"
+    exit 1
+}
+
+# update your computer
+if ask "Do you want to perform the latest apple update" N; then
+    sudo softwareupdate -i -a
+fi
+
+# homebrew
+if command_exists brew; then
+    echo_ok "Homebrew already installed. Getting updates..."
+    brew update
+    brew doctor
+else
+    echo_error "brew must be installed! (/bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)")"
+    exit 1
+fi
+
+if brew bundle check --global; then
+    echo_ok "Brew packages up to date."
+else
+    echo_warn "Installing, updating, and removing brew packages"
+    brew bundle install --global --cleanup
+fi
+
+# npm
+NPM_PACKAGES=(
+	yarn
+)
+if command_exists npm; then
+    echo_warn "Updating npm and globally installed npm packages"
+    npm install npm -g
+    npm install -g "${NPM_PACKAGES[@]}"
+    npm update -g
+fi
+
+# zsh
+
+cat <<'EOF' | zsh -l
+
+if [[ -f ~/.zshrc ]] ; then
+    source ~/.zshrc
+fi
+
+# load helper functions
+for file in ~/.{functions,}; do
+    [ -r "$file" ] && [ -f "$file" ] && source "$file"
+done
+unset file
+
+if command_exists zinit; then
+    echo_ok "zinit already installed. Getting updates..."
+    zinit self-update
+else
+    echo_warn "Installing zinit."
+    sh -c "$(curl -fsSL https://raw.githubusercontent.com/zdharma/zinit/master/doc/install.sh)"
+fi
+
+# update zinit plugins
+zinit update
+EOF
+
+
+
+
+# github
+
+# set up local uncommitted information
+if [[ ! -f ~/.gitconfig.local ]]; then
+    echo_warn "Setting up local github information."
+    echo ''
+    echo '##### Please enter your github username: '
+    read github_user
+    echo '##### Please enter your github email address: '
+    read github_email
+    echo '##### Please enter your name for commits: '
+    read github_name
+
+    # setup github local
+    if [[ $github_user && $github_email ]]; then
+        # setup config
+        git config --file ~/.gitconfig.local user.name "$github_name";
+        git config --file ~/.gitconfig.local user.email "$github_email";
+        git config --file ~/.gitconfig.local github.user "$github_user";
+    fi
+fi
+
+
+github_name=$(git config --file ~/.gitconfig.local user.name)
+github_email=$(git config --file ~/.gitconfig.local user.email)
+github_user=$(git config --file ~/.gitconfig.local github.user)
+
+if [[ $github_email ]]; then
+
+    # ssh
+    
+    # generate a private key if it doesn't exist
+    if [[ ! -f ~/.ssh/id_ed25519.key ]] ; then
+        echo_warn "Setting up private ssh key."
+
+        ssh-keygen -t ed25519 -C ${github_email} -f ~/.ssh/id_ed25519.key <<< y
+    fi
+
+    # generate a public key if it doesn't exist
+    if [[ ! -f ~/.ssh/id_ed25519.key.pub ]] ; then 
+        echo_warn "Setting up public ssh key."
+
+        ssh-keygen -y -f ~/.ssh/id_ed25519.key > ~/.ssh/id_ed25519.key.pub
+    fi
+
+    # start ssh agent in background
+    eval "$(ssh-agent -s)"
+    # add ssh key to the ssh-agent
+    ssh-add -K ~/.ssh/id_ed25519.key;
+
+    # set ssh key permissions
+    chmod 644 ~/.ssh/id_ed25519.key.pub;
+    chmod 600 ~/.ssh/id_ed25519.key;
+
+
+    #gpg
+    if ask "Do you want to sign commits with gpg" Y ;  then
+
+        # create a script to generate the key
+        GPG_GEN_KEY_SCRIPT="${HOME}/.gpg-gen-key-script";
+
+        cat <<EOF > "${GPG_GEN_KEY_SCRIPT}" 
+    %echo running gpg key generation
+    %ask-passphrase
+    Key-Type: default
+    Subkey-Type: default
+    Name-Real: ${github_name}
+    Name-Email: ${github_email}
+    Expire-Date: 0
+EOF
+
+        # if private key exists then import it
+        if  [[ -f ~/.gnupg/private.key ]] ; then
+            gpg --import ~/.gnupg/private.key
+        fi
+
+        # generate the key if no key is associated with the user
+        if gpg --list-secret-keys --keyid-format LONG "$github_email" 2>&1 | grep -q 'gpg: error reading key: No secret key'; then
+            # if no gpg key exists then create one
+            echo_warn "generating gpg key for $github_email"
+            gpg --batch --gen-key "$GPG_GEN_KEY_SCRIPT"
+        else
+            # if a gpg key is already associated with this email we're done
+            echo_ok "already found gpg key associated with $github_email"
+        fi
+
+        # remove the gpg key gen script
+        rm "$GPG_GEN_KEY_SCRIPT"
+
+        # get the gpg key id
+        GPG_KEY_ID=$(gpg --list-secret-keys --keyid-format LONG --with-colons "$github_email" | head -n 1 | cut -d ":" -f "5")
+
+        if ask "Do you want to export the gpg key files" Y; then
+            # export the key for import into github
+            rm -f ~/.gnupg/public.gpg;
+            rm -f ~/.gnupg/private.key;
+            gpg --output ~/.gnupg/public.gpg --armor --export "$GPG_KEY_ID";
+            gpg --output ~/.gnupg/private.key --armor --export-secret-key "$GPG_KEY_ID";
+            # set gpg key permissions
+            chmod 644 ~/.gnupg/public.gpg;
+            chmod 600 ~/.gnupg/private.key;
+        fi
+
+        # set the signing key in the git config
+        git config --file ~/.gitconfig.local user.signingkey $GPG_KEY_ID
+        # enable gpg signing
+        git config --file ~/.gitconfig.local commit.gpgsign true
+        # reload the gpg agent to add settings
+        { gpg-connect-agent reloadagent /bye; } >/dev/null
+    else
+        # disable gpg signing
+        git config --file ~/.gitconfig.local commit.gpgsign false
+    fi
+fi
+
+
+
+if ask "Do you want to add encrypted data to yadm" Y ; then 
+    # encrypt with yadm
+    yadm encrypt
+fi 
+
+if  ask "Do you want to set up macos" Y ; then
+    ./.macos
+fi
+
+# manual steps
+echo_warn "********************** MANUAL STEPS **********************"
+echo_warn "********************** First Install Only **********************"
+echo_warn "You may want to remap keys in System Preferences → Keyboard → Modifier Keys"
+echo_warn "Follow the instructions to install powerlevel10k fonts https://github.com/romkatv/powerlevel10k#manual-font-installation"
+echo_warn "Upload gpg key from "${HOME}/.gnupg/public.gpg" to github https://docs.github.com/en/github/authenticating-to-github/adding-a-new-gpg-key-to-your-github-account"
+echo_warn "\tpbcopy < ~/.gnupg/public.gpg"
+echo_warn "Upload ssh key from "${HOME}/.ssh/id_ed25519.key.pub" to github https://docs.github.com/en/github/authenticating-to-github/adding-a-new-ssh-key-to-your-github-account"
+echo_warn "\tpbcopy < ~/.ssh/id_ed25519.key.pub"
+
+# done
+echo_ok "Bootstrapping complete"

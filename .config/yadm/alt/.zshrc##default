@@ -1,0 +1,82 @@
+#!/usr/bin/env zsh
+
+# source dot files
+for file in ~/.{aliases,color_aliases,exports,functions,path}; do
+	[ -r "$file" ] && [ -f "$file" ] && source "$file";
+done;
+unset file;
+
+
+### Added by Zinit's installer
+if [[ ! -f $HOME/.zinit/bin/zinit.zsh ]]; then
+    print -P "%F{33}▓▒░ %F{220}Installing %F{33}DHARMA%F{220} Initiative Plugin Manager (%F{33}zdharma/zinit%F{220})…%f"
+    command mkdir -p "$HOME/.zinit" && command chmod g-rwX "$HOME/.zinit"
+    command git clone https://github.com/zdharma/zinit "$HOME/.zinit/bin" && \
+        print -P "%F{33}▓▒░ %F{34}Installation successful.%f%b" || \
+        print -P "%F{160}▓▒░ The clone has failed.%f%b"
+fi
+
+source "$HOME/.zinit/bin/zinit.zsh"
+autoload -Uz _zinit
+(( ${+_comps} )) && _comps[zinit]=_zinit
+
+# Load a few important annexes, without Turbo
+# (this is currently required for annexes)
+zinit light-mode for \
+    zinit-zsh/z-a-rust \
+    zinit-zsh/z-a-as-monitor \
+    zinit-zsh/z-a-patch-dl \
+    zinit-zsh/z-a-bin-gem-node
+
+### End of Zinit's installer chunk
+
+# use powerlevel10k
+zinit ice depth=1; zinit light romkatv/powerlevel10k
+
+# To customize prompt, run `p10k configure` or edit ~/.p10k.zsh.
+[[ ! -f ~/.p10k.zsh ]] || source ~/.p10k.zsh
+
+# setup zoxide for jumping around
+eval "$(zoxide init zsh)"
+
+# add some oh my zsh plugins
+# https://github.com/ohmyzsh/ohmyzsh/tree/master/plugins
+# git for aliases
+# ssh-agent to setup and load ssh credentials
+# tmux to start tmux
+zinit wait lucid for \
+        OMZP::git \
+        OMZP::ssh-agent \
+        OMZP::tmux
+
+# minimal zinit setup
+zinit wait lucid for \
+    atinit"zicompinit; zicdreplay" \
+        zdharma/fast-syntax-highlighting \
+    atload"_zsh_autosuggest_start" \
+        zsh-users/zsh-autosuggestions \
+    blockf atpull'zinit creinstall -q .' \
+        zsh-users/zsh-completions
+
+# vi mode
+bindkey -v
+
+source "$HOME/.exports"
+source "$HOME/.aliases"
+source "$HOME/.functions"
+[[ -f "$HOME/.extra" ]] && source "$HOME/.extra"
+[ -f ~/.fzf.zsh ] && source ~/.fzf.zsh
+
+# history stuff
+# write to history immediately
+setopt INC_APPEND_HISTORY
+# share history between shells
+setopt SHARE_HISTORY
+# remove extraneous whitespace before writing
+setopt HIST_REDUCE_BLANKS
+# ignore commands that start with space
+setopt HIST_IGNORE_SPACE
+
+# turn off bell
+unsetopt BEEP
+

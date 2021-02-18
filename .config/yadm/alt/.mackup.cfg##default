@@ -1,0 +1,11 @@
+[storage]
+engine = file_system
+path = .config
+directory = mackup
+
+[applications_to_sync]
+rectangle
+iterm2
+dash
+flux
+spotify

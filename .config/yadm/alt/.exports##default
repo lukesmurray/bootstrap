@@ -1,0 +1,33 @@
+#!/usr/bin/env bash
+
+# make code the default editor
+export EDITOR="code"
+
+# Make Python use UTF-8 encoding for output to stdin, stdout, and stderr.
+export PYTHONIOENCODING='UTF-8';
+
+# Increase Bash history size. Allow 32³ entries; the default is 500.
+export HISTSIZE='32768';
+export HISTFILESIZE="${HISTSIZE}";
+# Omit duplicates and commands that begin with a space from history.
+export HISTCONTROL='ignoreboth';
+
+# Prefer US English and use UTF-8.
+export LANG='en_US.UTF-8';
+export LC_ALL='en_US.UTF-8';
+
+# Hide the “default interactive shell is now zsh” warning on macOS.
+export BASH_SILENCE_DEPRECATION_WARNING=1;
+
+# Avoid issues with `gpg` as installed via Homebrew.
+# https://stackoverflow.com/a/42265848/96656
+export GPG_TTY=$(tty);
+
+# automatically start tmux
+export ZSH_TMUX_AUTOSTART="false"
+# don't quit the terminal when we leave tmux
+export ZSH_TMUX_AUTOQUIT="false"
+# fix the TERM variable automatically
+export ZSH_TMUX_FIXTERM="true"
+
+export HISTFILE="$HOME/.zsh_history"
