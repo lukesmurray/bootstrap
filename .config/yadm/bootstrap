@@ -70,6 +70,7 @@ if brew bundle check --global; then
 else
     echo_warn "Syncing brew packages with brew bundle"
     brew bundle install --global --cleanup
+    brew cleanup
 fi
 
 # npm

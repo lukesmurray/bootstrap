@@ -401,6 +401,9 @@ tmux_conf_update_plugins_on_reload=true
 set -g @plugin 'tmux-plugins/tmux-resurrect'
 set -g @plugin 'tmux-plugins/tmux-continuum'
 set -g @continuum-restore 'on'
+set -g @tpm-install 'M-i'
+set -g @tpm-update 'M-u'
+set -g @tpm-clean 'M-c'
 
 
 # -- custom variables ----------------------------------------------------------
