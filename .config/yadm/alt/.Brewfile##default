@@ -48,10 +48,10 @@ cask "dash"
 cask "flux"
 # browser
 cask "google-chrome"
-# terminal
-cask "iterm2"
 # screen recording
 cask "kap"
+# terminal
+cask "kitty"
 # keyboard window management
 cask "rectangle"
 # time tracking

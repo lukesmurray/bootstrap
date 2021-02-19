@@ -1,2 +1,2 @@
-.gnupg/*.key
-.ssh/*.key
+.gnupg/private.key
+.ssh/id_ed25519.key

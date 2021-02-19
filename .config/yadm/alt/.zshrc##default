@@ -1,7 +1,7 @@
 #!/usr/bin/env zsh
 
 # source dot files
-for file in ~/.{aliases,color_aliases,exports,functions,path}; do
+for file in ~/.{aliases,color_aliases,exports,functions}; do
 	[ -r "$file" ] && [ -f "$file" ] && source "$file";
 done;
 unset file;

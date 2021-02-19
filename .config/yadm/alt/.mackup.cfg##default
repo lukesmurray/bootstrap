@@ -5,7 +5,10 @@ directory = mackup
 
 [applications_to_sync]
 rectangle
-iterm2
 dash
 flux
 spotify
+npm
+yarn
+docker
+ngrok

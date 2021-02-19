@@ -11,7 +11,11 @@ for file in ~/.{functions,}; do
 done
 unset file
 
-if ask "Do you want to decrypt encrypted files" Y; then
+echo_ok "Install starting..."
+
+if ask "Decrypt files from yadm?" Y; then
+
+    echo_warn "Decrypting files..."
 
     # decrypt files
     yadm decrypt;
@@ -27,9 +31,10 @@ if ask "Do you want to decrypt encrypted files" Y; then
     if [[ -f ~/.ssh/id_ed25519.key ]] ; then 
          chmod 600 ~/.ssh/id_ed25519.key;
     fi
+else
+    echo_ok "Skipping decrpyt step"
 fi
 
-echo_ok "Install starting. You may be asked for your password (for sudo)."
 
 # requires xcode and tools!
 xcode-select -p || {
@@ -38,8 +43,11 @@ xcode-select -p || {
 }
 
 # update your computer
-if ask "Do you want to perform the latest apple update" N; then
+if ask "Perform latest apple update?" N; then
+    echo_warn "Updating to latest apple software"
     sudo softwareupdate -i -a
+else
+    echo_ok "Skipping apple update"
 fi
 
 # homebrew
@@ -48,18 +56,19 @@ if command_exists brew; then
     brew update
     brew doctor
 else
-    echo_error "brew must be installed! (/bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)")"
+    echo_error 'brew must be installed! (/bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)")'
     exit 1
 fi
 
 if brew bundle check --global; then
     echo_ok "Brew packages up to date."
 else
-    echo_warn "Installing, updating, and removing brew packages"
+    echo_warn "Syncing brew packages with brew bundle"
     brew bundle install --global --cleanup
 fi
 
 # npm
+# list of packages to install globally with npm
 NPM_PACKAGES=(
 	yarn
 )
@@ -93,10 +102,9 @@ else
 fi
 
 # update zinit plugins
+echo_warn "Updating zinit plugins."
 zinit update
 EOF
-
-
 
 
 # github
@@ -129,38 +137,44 @@ github_user=$(git config --file ~/.gitconfig.local github.user)
 if [[ $github_email ]]; then
 
     # ssh
-    
-    # generate a private key if it doesn't exist
-    if [[ ! -f ~/.ssh/id_ed25519.key ]] ; then
-        echo_warn "Setting up private ssh key."
+    if ask "Set up ssh key?" Y; then
+        # generate a private key if it doesn't exist
+        if [[ ! -f ~/.ssh/id_ed25519.key ]] ; then
+            echo_warn "Setting up private ssh key."
 
-        ssh-keygen -t ed25519 -C ${github_email} -f ~/.ssh/id_ed25519.key <<< y
-    fi
+            ssh-keygen -t ed25519 -C ${github_email} -f ~/.ssh/id_ed25519.key <<< y
+        else
+            echo_ok "Found existing ssh key"
+        fi
 
-    # generate a public key if it doesn't exist
-    if [[ ! -f ~/.ssh/id_ed25519.key.pub ]] ; then 
-        echo_warn "Setting up public ssh key."
+        # generate a public key if it doesn't exist
+        if [[ ! -f ~/.ssh/id_ed25519.key.pub ]] ; then 
+            echo_warn "Setting up public ssh key."
 
-        ssh-keygen -y -f ~/.ssh/id_ed25519.key > ~/.ssh/id_ed25519.key.pub
-    fi
+            ssh-keygen -y -f ~/.ssh/id_ed25519.key > ~/.ssh/id_ed25519.key.pub
+        fi
 
-    # start ssh agent in background
-    eval "$(ssh-agent -s)"
-    # add ssh key to the ssh-agent
-    ssh-add -K ~/.ssh/id_ed25519.key;
+        echo_ok "adding ssh key to ssh-agent"
+        # start ssh agent in background
+        eval "$(ssh-agent -s)"
+        # add ssh key to the ssh-agent
+        ssh-add -K ~/.ssh/id_ed25519.key;
 
-    # set ssh key permissions
-    chmod 644 ~/.ssh/id_ed25519.key.pub;
-    chmod 600 ~/.ssh/id_ed25519.key;
+        # set ssh key permissions
+        chmod 644 ~/.ssh/id_ed25519.key.pub;
+        chmod 600 ~/.ssh/id_ed25519.key;
+    else
+        echo_ok "skipping ssh key generation"
+    fi 
 
 
     #gpg
-    if ask "Do you want to sign commits with gpg" Y ;  then
+    if ask "Setup gpg key for commit signing?" Y ;  then
 
         # create a script to generate the key
         GPG_GEN_KEY_SCRIPT="${HOME}/.gpg-gen-key-script";
 
-        cat <<EOF > "${GPG_GEN_KEY_SCRIPT}" 
+        cat <<EOF > "${GPG_GEN_KEY_SCRIPT}"
     %echo running gpg key generation
     %ask-passphrase
     Key-Type: default
@@ -172,13 +186,14 @@ EOF
 
         # if private key exists then import it
         if  [[ -f ~/.gnupg/private.key ]] ; then
+            echo_ok "Found existing key, importing..."
             gpg --import ~/.gnupg/private.key
         fi
 
         # generate the key if no key is associated with the user
         if gpg --list-secret-keys --keyid-format LONG "$github_email" 2>&1 | grep -q 'gpg: error reading key: No secret key'; then
             # if no gpg key exists then create one
-            echo_warn "generating gpg key for $github_email"
+            echo_warn "generating gpg key for git email $github_email"
             gpg --batch --gen-key "$GPG_GEN_KEY_SCRIPT"
         else
             # if a gpg key is already associated with this email we're done
@@ -191,38 +206,54 @@ EOF
         # get the gpg key id
         GPG_KEY_ID=$(gpg --list-secret-keys --keyid-format LONG --with-colons "$github_email" | head -n 1 | cut -d ":" -f "5")
 
-        if ask "Do you want to export the gpg key files" Y; then
+        if ask "Export gpg keys for upload and backup?" Y; then
             # export the key for import into github
-            rm -f ~/.gnupg/public.gpg;
+            rm -f ~/.gnupg/public.key;
             rm -f ~/.gnupg/private.key;
-            gpg --output ~/.gnupg/public.gpg --armor --export "$GPG_KEY_ID";
+            gpg --output ~/.gnupg/public.key --armor --export "$GPG_KEY_ID";
             gpg --output ~/.gnupg/private.key --armor --export-secret-key "$GPG_KEY_ID";
             # set gpg key permissions
-            chmod 644 ~/.gnupg/public.gpg;
+            chmod 644 ~/.gnupg/public.key;
             chmod 600 ~/.gnupg/private.key;
         fi
 
-        # set the signing key in the git config
-        git config --file ~/.gitconfig.local user.signingkey $GPG_KEY_ID
-        # enable gpg signing
-        git config --file ~/.gitconfig.local commit.gpgsign true
+        if ask "Sign git commits with gpg key?" Y; then
+            echo_ok "enabling commit signing"
+            # set the signing key in the git config
+            git config --file ~/.gitconfig.local user.signingkey $GPG_KEY_ID
+            # enable gpg signing
+            git config --file ~/.gitconfig.local commit.gpgsign true
+        else
+            echo_ok "disabling commit signing"
+            # disable gpg signing
+            git config --file ~/.gitconfig.local commit.gpgsign false
+        fi
+
         # reload the gpg agent to add settings
         { gpg-connect-agent reloadagent /bye; } >/dev/null
     else
-        # disable gpg signing
-        git config --file ~/.gitconfig.local commit.gpgsign false
+        echo_ok "skipping gpg key generation"
     fi
+
+
 fi
 
 
 
-if ask "Do you want to add encrypted data to yadm" Y ; then 
+if ask "add sensitive data to yadm?" Y ; then 
     # encrypt with yadm
+    echo_warn "encrypting sensistve data to yadm"
     yadm encrypt
-fi 
+else
+    echo_ok "skipping yadm encryption"
+fi
 
-if  ask "Do you want to set up macos" Y ; then
+
+if  ask "set up macos defaults?" Y ; then
+    echo_warn "setting up mac os defaults"
     ./.macos
+else
+    echo_ok "skipping mac os setup"
 fi
 
 # manual steps
@@ -230,8 +261,8 @@ echo_warn "********************** MANUAL STEPS **********************"
 echo_warn "********************** First Install Only **********************"
 echo_warn "You may want to remap keys in System Preferences → Keyboard → Modifier Keys"
 echo_warn "Follow the instructions to install powerlevel10k fonts https://github.com/romkatv/powerlevel10k#manual-font-installation"
-echo_warn "Upload gpg key from "${HOME}/.gnupg/public.gpg" to github https://docs.github.com/en/github/authenticating-to-github/adding-a-new-gpg-key-to-your-github-account"
-echo_warn "\tpbcopy < ~/.gnupg/public.gpg"
+echo_warn "Upload gpg key from "${HOME}/.gnupg/public.key" to github https://docs.github.com/en/github/authenticating-to-github/adding-a-new-gpg-key-to-your-github-account"
+echo_warn "\tpbcopy < ~/.gnupg/public.key"
 echo_warn "Upload ssh key from "${HOME}/.ssh/id_ed25519.key.pub" to github https://docs.github.com/en/github/authenticating-to-github/adding-a-new-ssh-key-to-your-github-account"
 echo_warn "\tpbcopy < ~/.ssh/id_ed25519.key.pub"
 

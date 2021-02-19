@@ -1,0 +1,20 @@
+# font family for powerlevel 10k
+
+font_family MesloLGS NF
+
+#: Enable/disable the audio bell. Useful in environments that require
+#: silence.
+
+enable_audio_bell no
+
+#: Request window attention on bell. Makes the dock icon bounce on
+#: macOS or the taskbar flash on linux.
+
+window_alert_on_bell yes
+
+#: Show a bell symbol on the tab if a bell occurs in one of the
+#: windows in the tab and the window is not the currently focused
+#: window
+
+bell_on_tab no
+

@@ -37,8 +37,8 @@ Brew is used to manage installed programs. zinit is used to manage zsh. moderate
 
 - Alfred
 - Vscode settings
-- iterm tmux power
 - duti
+- create separate system for mackup settings they are too private
 
 ## Testing
 
