@@ -31,6 +31,11 @@ if ask "Decrypt files from yadm?" Y; then
     if [[ -f ~/.ssh/id_ed25519.key ]] ; then 
          chmod 600 ~/.ssh/id_ed25519.key;
     fi
+
+    # private ssh rsa
+    if [[ -f ~/.ssh/id_rsa ]] ; then
+        chmod 600 ~/.ssh/id_rsa;
+    fi
 else
     echo_ok "Skipping decrpyt step"
 fi
@@ -155,15 +160,28 @@ if [[ $github_email ]]; then
             ssh-keygen -y -f ~/.ssh/id_ed25519.key > ~/.ssh/id_ed25519.key.pub
         fi
 
+        if [[ -f ~/.ssh/id_rsa && ! -f ~/.ssh/id_rsa.pub ]] ; then
+            echo_warn "Setting up public ssh key."
+
+            ssh-keygen -y -f ~/.ssh/id_rsa > ~/.ssh/id_rsa.pub
+        fi
+
         echo_ok "adding ssh key to ssh-agent"
         # start ssh agent in background
         eval "$(ssh-agent -s)"
         # add ssh key to the ssh-agent
         ssh-add -K ~/.ssh/id_ed25519.key;
+        if [[ -f ~/.ssh/id_rsa ]] ; then
+            ssh-add -K ~/.ssh/id_rsa
+        fi
 
         # set ssh key permissions
         chmod 644 ~/.ssh/id_ed25519.key.pub;
         chmod 600 ~/.ssh/id_ed25519.key;
+        if [[ -f ~/.ssh/id_rsa ]] ; then
+            chmod 644 ~/.ssh/id_rsa.pub
+            chmod 600 ~/.ssh/id_rsa
+        fi
     else
         echo_ok "skipping ssh key generation"
     fi 
