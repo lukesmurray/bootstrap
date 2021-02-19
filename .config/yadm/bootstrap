@@ -71,6 +71,7 @@ fi
 # list of packages to install globally with npm
 NPM_PACKAGES=(
 	yarn
+    @jarred/git-peek
 )
 if command_exists npm; then
     echo_warn "Updating npm and globally installed npm packages"
