@@ -4,6 +4,7 @@
 // uses apple script hacks to get around the following issue
 // https://github.com/kasper/phoenix/issues/209
 // helper for finding application names at the bottom of the file
+// while developing run log stream --process Phoenix in a console
 
 // common screen locations
 const topHalf = {
@@ -48,6 +49,7 @@ guakeApp({
   appName: "kitty",
   position: topHalf,
   followsMouse: true,
+  hideOnBlur: true,
 });
 guakeApp({
   key: "s",
@@ -55,6 +57,7 @@ guakeApp({
   appName: "Slack",
   position: leftHalf,
   followsMouse: true,
+  hideOnBlur: false,
 });
 guakeApp({
   key: "m",
@@ -62,6 +65,7 @@ guakeApp({
   appName: "Messages",
   position: lowerLeftHalf,
   followsMouse: true,
+  hideOnBlur: false,
 });
 guakeApp({
   key: "p",
@@ -69,6 +73,7 @@ guakeApp({
   appName: "Spotify",
   position: full,
   followsMouse: true,
+  hideOnBlur: false,
 });
 guakeApp({
   key: "r",
@@ -76,6 +81,7 @@ guakeApp({
   appName: "Roam Research",
   position: rightHalf,
   followsMouse: true,
+  hideOnBlur: false,
 });
 guakeApp({
   key: "c",
@@ -83,6 +89,7 @@ guakeApp({
   appName: "Code",
   position: rightHalf,
   followsMouse: false,
+  hideOnBlur: false,
 });
 
 /**
@@ -92,8 +99,16 @@ guakeApp({
  * @param {string} appName the name of the app
  * @param {{left: number, top: number, right: number, bottom: number}} relativeFrame the margins to place the application in.
  * @param {followsMouse} boolean whether the app should open in the screen containing the mouse
+ * @param {hideOnBlur} boolean whether the window should hide when it loses focus
  */
-function guakeApp({ key, modifiers, appName, position, followsMouse }) {
+function guakeApp({
+  key,
+  modifiers,
+  appName,
+  position,
+  followsMouse,
+  hideOnBlur,
+}) {
   Key.on(key, modifiers, async function () {
     let [app, opened] = await startApp(appName, { focus: false });
 
@@ -110,6 +125,15 @@ function guakeApp({ key, modifiers, appName, position, followsMouse }) {
         app.hide();
       } else {
         app.focus();
+      }
+
+      if (hideOnBlur) {
+        const identifier = Event.on("appDidActivate", (activatedApp) => {
+          if (app.name() !== activatedApp.name()) {
+            app.hide();
+            Event.off(identifier);
+          }
+        });
       }
     }
   });

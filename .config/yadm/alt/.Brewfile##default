@@ -109,3 +109,5 @@ mas "Highlights – Export PDF Notes", id: 1498912833
 mas "Todoist: To-Do List & Tasks", id: 585829637
 # simpler bluetooth connections
 mas "Toothfairy", id: 1191449274
+# add block for safari
+mas "AdGuard for Safari", id: 1440147259 
