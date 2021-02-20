@@ -2,7 +2,7 @@
 
 These are my dotfiles for bootstrapping my Mac.
 It's not actually empty.
-I use [yadm](https://github.com/TheLocehiliosan/yadm) to manage my dotfiles and store everything in [`.config/yadm/alt`](.config/yadm/alt).
+I use [yadm](https://github.com/TheLocehiliosan/yadm) to manage my dotfiles and store everything in [`.config/yadm/alt`](../.config/yadm/alt).
 
 ## Features
 
