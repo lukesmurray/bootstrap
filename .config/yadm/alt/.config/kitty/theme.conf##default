@@ -1,0 +1,35 @@
+# Vscode Dark Theme for Kitty
+
+# Created using the following steps
+
+# download iterm dark theme from https://github.com/tallpants/vscode-theme-iterm2/blob/master/vscode.itermcolors
+# curl -O https://raw.githubusercontent.com/tallpants/vscode-theme-iterm2/master/vscode.itermcolors
+# download script to convert iterm theme to kitty theme
+# from https://gist.github.com/qrbounty/379858c221885a62987b74e39a6c292b
+# curl -O https://gist.githubusercontent.com/qrbounty/379858c221885a62987b74e39a6c292b/raw/7805c7bcb21c4598c394b832c634dbc2d270f8eb/iterm2kitty.py
+# chmod +x iterm2kitty.py
+
+
+color0 #000000
+color1 #f6645d
+color10 #00c48b
+color11 #eae60d
+color12 #66adde
+color13 #df89dd
+color14 #2bc4e2
+color15 #eaeaea
+color2 #00c48b
+color3 #eae60d
+color4 #66adde
+color5 #df89dd
+color6 #2bc4e2
+color7 #eaeaea
+color8 #666666
+color9 #f6645d
+background #1e1e1e
+cursor #d5d5d5
+cursor_text_color #282828
+foreground #dcdcdc
+url_color #719a60
+selection_foreground #000000
+selection_background #c3c2c3

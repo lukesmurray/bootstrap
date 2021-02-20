@@ -18,3 +18,9 @@ window_alert_on_bell yes
 
 bell_on_tab no
 
+# allow other programs to control kitty 
+
+allow_remote_control yes
+
+# include vscode dark theme
+include ./theme.conf
