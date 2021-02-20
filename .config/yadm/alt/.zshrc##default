@@ -1,5 +1,11 @@
 #!/usr/bin/env zsh
 
+# inspirede by https://github.com/crivotz/dot_files/blob/master/linux/zplugin/zshrc
+
+########################################
+# Instant Prompt
+########################################
+
 # Enable Powerlevel10k instant prompt. Should stay close to the top of ~/.zshrc.
 # Initialization code that may require console input (password prompts, [y/n]
 # confirmations, etc.) must go above this block; everything else may go below.
@@ -7,11 +13,18 @@ if [[ -r "${XDG_CACHE_HOME:-$HOME/.cache}/p10k-instant-prompt-${(%):-%n}.zsh" ]]
   source "${XDG_CACHE_HOME:-$HOME/.cache}/p10k-instant-prompt-${(%):-%n}.zsh"
 fi
 
-# source config files
+########################################
+# Config Files
+########################################
+
 for file in ~/.{aliases,color_aliases,exports,functions}; do
 	[ -r "$file" ] && [ -f "$file" ] && source "$file";
 done;
 unset file;
+
+########################################
+# Zinit Initialization
+########################################
 
 ### Added by Zinit's installer
 if [[ ! -f $HOME/.zinit/bin/zinit.zsh ]]; then
@@ -26,7 +39,6 @@ source "$HOME/.zinit/bin/zinit.zsh"
 autoload -Uz _zinit
 (( ${+_comps} )) && _comps[zinit]=_zinit
 
-
 # Load a few important annexes, without Turbo
 # (this is currently required for annexes)
 zinit light-mode for \
@@ -37,14 +49,25 @@ zinit light-mode for \
 
 ### End of Zinit's installer chunk
 
-# use powerlevel10k
+########################################
+# Theme
+########################################
 zinit ice depth=1; zinit light romkatv/powerlevel10k
 
 # To customize prompt, run `p10k configure` or edit ~/.p10k.zsh.
 [[ ! -f ~/.p10k.zsh ]] || source ~/.p10k.zsh
 
+
+########################################
+# Zoxide for Autojump
+########################################
+
 # setup zoxide for jumping around
 eval "$(zoxide init zsh)"
+
+########################################
+# Plugins
+########################################
 
 # add some oh my zsh plugins
 # https://github.com/ohmyzsh/ohmyzsh/tree/master/plugins
@@ -56,16 +79,34 @@ zinit wait lucid for \
         OMZP::ssh-agent \
         OMZP::tmux
 
-# minimal zinit setup
-# bind map not working here
-zinit wait lucid for \
-    atinit"zicompinit; zicdreplay" \
-        zdharma/fast-syntax-highlighting \
-    bindmap='!"^ " -> autosuggest-accept;' \
-    atload"_zsh_autosuggest_start" \
-        zsh-users/zsh-autosuggestions \
-    blockf atpull'zinit creinstall -q .' \
-        zsh-users/zsh-completions
+# AUTOSUGGESTIONS
+# max buffer to complete (avoid completing large pasted text)
+ZSH_AUTOSUGGEST_BUFFER_MAX_SIZE=20
+# trigger precmd hook at load and use ctrl+space to accept suggestions
+zinit ice wait"0a" lucid atload'_zsh_autosuggest_start; bindkey "^ " autosuggest-accept;'
+zinit light zsh-users/zsh-autosuggestions
+
+# HISTORY SUBSTRING SEARCHING
+# on up and down arrow search history
+zinit ice wait"0b" lucid atload'bindkey "$terminfo[kcuu1]" history-substring-search-up; bindkey "$terminfo[kcud1]" history-substring-search-down'
+zinit light zsh-users/zsh-history-substring-search
+bindkey '^[[A' history-substring-search-up
+bindkey '^[[B' history-substring-search-down
+bindkey -M vicmd 'k' history-substring-search-up
+bindkey -M vicmd 'j' history-substring-search-down
+
+# TAB COMPLETIONS
+zinit ice wait"0b" lucid blockf
+zinit light zsh-users/zsh-completions
+
+# SYNTAX HIGHLIGHTING
+zinit ice wait"0c" lucid atinit"zpcompinit;zpcdreplay"
+zinit light zdharma/fast-syntax-highlighting
+
+
+########################################
+# Vi Bindings
+########################################
 
 # vi mode
 bindkey -v
@@ -84,15 +125,29 @@ zle -N vi-yank-xclip
 bindkey -M vicmd 'y' vi-yank-xclip
 
 
-# history stuff
-# write to history immediately
+########################################
+# History
+########################################
+
+# increase histsize
+HISTSIZE=999999999
+SAVEHIST=$HISTSIZE
+# set history file
+HISTFILE=~/.zsh_history
+# write to history immediately not on shell exit
 setopt INC_APPEND_HISTORY
 # share history between shells
 setopt SHARE_HISTORY
-# remove extraneous whitespace before writing
+# add timestamp to hist and executation time
+setopt EXTENDED_HISTORY
+# removes blank lines from history
 setopt HIST_REDUCE_BLANKS
-# ignore commands that start with space
-setopt HIST_IGNORE_SPACE
+# ignore duplicates when searching history
+setopt HIST_FIND_NO_DUPS
+
+########################################
+# Bell Settings
+########################################
 
 # turn off bell
 unsetopt BEEP
