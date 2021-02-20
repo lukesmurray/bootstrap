@@ -1,8 +1,23 @@
 # Bootstrap MacOS
 
-Bootstrap and dotfiles for macos, managed with [yadm](https://github.com/TheLocehiliosan/yadm).
-Dotfiles are stored in `~/.config/yadm/alt` and sym linked into the home directory.
-The bootstrap script is `~/.config/yadm/bootstrap`.
+These are my dotfiles for bootstrapping my Mac.
+It's not actually empty.
+I use [yadm](https://github.com/TheLocehiliosan/yadm) to manage my dotfiles and store everything in [`.config/yadm/alt`](.config/yadm/alt).
+
+## Features
+
+- shell
+  - zsh with zinit as a package manager for fast startups!
+  - powerlevel10k for a pretty prompt
+  - tmux for split panes goodies
+- packages
+  - brew bundle to manage brew packages and casks
+- terminal
+  - kitty terminal (for speed and battery life)
+- guake style applications
+  - like iterm but for everything 🦄
+- gpg and ssh key generation
+  - no more fiddling around, just hit yes and upload to github 🚀
 
 ## Common Tasks
 
@@ -20,25 +35,21 @@ yadm clone --bootstrap -f https://github.com/lukesmurray/bootstrap.git ;
 Update dotfiles
 
 ```sh
-yadm pull && yadm alt && yadm bootstrap ;
+cd ; yadm pull && yadm alt && yadm bootstrap ;
 ```
 
 Edit your dotfiles in an editor.
 
 ```sh
-cd; yadm list -a | xargs code
+cd; yadm list -a | xargs ${EDITOR}
 ```
 
-## Architecture
+## Todo
 
-Brew is used to manage installed programs. zinit is used to manage zsh. moderate amount of effort into setting up gpg and ssh automatically.
-
-## TODO
-
-- Alfred
-- Vscode settings
-- duti
-- create separate system for mackup settings they are too private
+- Alfred - store key somewhere
+- Vscode settings - instructions for syncing
+- duti - default apps
+- mackup - instructions for backing up and restoring files
 
 ## Testing
 

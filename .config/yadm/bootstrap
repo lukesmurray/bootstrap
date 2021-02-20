@@ -13,7 +13,7 @@ unset file
 
 echo_ok "Install starting..."
 
-if ask "Decrypt files from yadm?" Y; then
+if ask "Decrypt files from yadm?" N; then
 
     echo_warn "Decrypting files..."
 
@@ -144,7 +144,7 @@ github_user=$(git config --file ~/.gitconfig.local github.user)
 if [[ $github_email ]]; then
 
     # ssh
-    if ask "Set up ssh key?" Y; then
+    if ask "Set up ssh key?" N; then
         # generate a private key if it doesn't exist
         if [[ ! -f ~/.ssh/id_ed25519.key ]] ; then
             echo_warn "Setting up private ssh key."
@@ -189,7 +189,7 @@ if [[ $github_email ]]; then
 
 
     #gpg
-    if ask "Setup gpg key for commit signing?" Y ;  then
+    if ask "Setup gpg key for commit signing?" N ;  then
 
         # create a script to generate the key
         GPG_GEN_KEY_SCRIPT="${HOME}/.gpg-gen-key-script";
@@ -260,7 +260,7 @@ fi
 
 
 
-if ask "add sensitive data to yadm?" Y ; then 
+if ask "add sensitive data to yadm?" N ; then 
     # encrypt with yadm
     echo_warn "encrypting sensistve data to yadm"
     yadm encrypt
@@ -269,7 +269,7 @@ else
 fi
 
 
-if  ask "set up macos defaults?" Y ; then
+if  ask "set up macos defaults?" N ; then
     echo_warn "setting up mac os defaults"
     ./.macos
 else
