@@ -29,12 +29,14 @@ Install your dotfiles (first time)
 # install yadm
 brew install yadm
 # clone this repo and run the bootstrap script
+# on the first run you may want to say yes to things
 yadm clone --bootstrap -f https://github.com/lukesmurray/bootstrap.git ;
 ```
 
 Update dotfiles
 
 ```sh
+# on any follow up runs feel free to accept the defaults
 cd ; yadm pull && yadm alt && yadm bootstrap ;
 ```
 

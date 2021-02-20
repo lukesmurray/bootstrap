@@ -1,6 +1,10 @@
 # This file manages all the applications on a mac. Its used by bootstrap.sh
 # For syntax go to https://github.com/Homebrew/homebrew-bundle
 
+tap "homebrew/cask-fonts"
+tap "homebrew/cask"
+
+
 # bash 4
 brew "bash"
 # version control
@@ -11,6 +15,10 @@ brew "fzf"
 brew "fd"
 # faster grep
 brew "rg"
+# set default apps
+brew "duti"
+# simple watch file changes
+brew "entr"
 # store images in git
 brew "git-lfs"
 # sign commits
@@ -33,6 +41,19 @@ brew "gnupg"
 brew "pinentry-mac"
 # tmux for terminals
 brew "tmux"
+# mac app store manager
+brew "mas"
+# image processing cli
+brew "imagemagick"
+# manipulate json with the cli
+brew "jq"
+# send notifications from the terminal
+brew "terminal-notifier"
+# containers
+brew "docker-compose"
+# svn for fonts
+brew "svn"
+
 
 # automation and search
 cask "alfred"
@@ -68,6 +89,17 @@ cask "vlc"
 cask "zoom"
 # reference manager
 cask "zotero"
+# mac window manager scripting
+cask "phoenix"
+# containers
+cask "docker"
+# editor font
+cask "font-roboto-mono-for-powerline"
+# hide menu bar icons
+cask "vanilla"
+# content blocker
+cask "cold-turkey-blocker"
+
 
 # password manager
 mas "LastPass", id: 926036361
