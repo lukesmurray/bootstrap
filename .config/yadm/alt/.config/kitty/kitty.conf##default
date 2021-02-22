@@ -58,6 +58,7 @@ map ctrl+a>j neighboring_window down
 # closing tabs setting titles
 map ctrl+a>x close_window
 map ctrl+a>c new_tab
+map ctrl+a>shift+c new_tab_with_cwd
 map ctrl+a>, set_tab_title
 
 # navigating tabs
