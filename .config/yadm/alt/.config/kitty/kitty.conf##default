@@ -24,3 +24,62 @@ allow_remote_control yes
 
 # include vscode dark theme
 include ./theme.conf
+
+# show indexes in tab title
+tab_title_template "{index}: {title}"
+
+# powerline tab bar style
+tab_bar_style powerline
+
+# 2 tabs beforee show tab bar
+tab_bar_min_tabs 2
+
+################################################################
+# Vim/Tmux Split Behavior
+################################################################
+
+# creating splits
+map ctrl+a>- launch --location=hsplit
+map ctrl+a>shift+- launch --location=vsplit
+
+# moving splits
+map ctrl+a>shift+, move_window left
+map ctrl+a>shift+. move_window right
+
+# navigating splits
+map ctrl+a>h neighboring_window left
+map ctrl+a>l neighboring_window right
+map ctrl+a>k neighboring_window up
+map ctrl+a>j neighboring_window down
+
+# closing tabs setting titles
+map ctrl+a>x close_window
+map ctrl+a>c new_tab
+map ctrl+a>, set_tab_title
+
+# navigating tabs
+map ctrl+a>1 goto_tab 1
+map ctrl+a>2 goto_tab 2
+map ctrl+a>3 goto_tab 3
+map ctrl+a>4 goto_tab 4
+map ctrl+a>5 goto_tab 5
+map ctrl+a>6 goto_tab 6
+map ctrl+a>7 goto_tab 7
+map ctrl+a>8 goto_tab 8
+map ctrl+a>9 goto_tab 9
+
+map ctrl+a>ctrl+h previous_tab
+map ctrl+a>ctrl+l next_tab
+
+map ctrl+a>ctrl+shift+, move_tab_forward
+map ctrl+a>ctrl+shift+. move_tab_backward
+
+# resizing splits
+map ctrl+a>shift+h resize_window narrower 2
+map ctrl+a>shift+l resize_window wider 2
+map ctrl+a>shift+k resize_window taller 2
+map ctrl+a>shift+j resize_window shorter 2
+
+# use split pane layout
+enabled_layouts splits:split_axis=horizontal
+
