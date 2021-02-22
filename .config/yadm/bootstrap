@@ -86,6 +86,16 @@ if command_exists npm; then
     npm update -g
 fi
 
+# asdf
+# add node-js plugin https://github.com/asdf-vm/asdf-nodejs
+asdf plugin-add nodejs
+asdf install nodejs latest
+asdf global nodejs "$(asdf latest nodejs)"
+# add direnv plugin
+asdf plugin-add direnv
+asdf install direnv latest
+asdf global direnv "$(asdf latest direnv)"
+
 # zsh
 
 cat <<'EOF' | zsh -l

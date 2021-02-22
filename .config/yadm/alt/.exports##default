@@ -26,3 +26,6 @@ export ZSH_TMUX_FIXTERM="true"
 
 # use ansi-dark as the theme for bat
 export BAT_THEME="ansi-dark"
+
+# don't check node js signatures
+export NODEJS_CHECK_SIGNATURES="no"

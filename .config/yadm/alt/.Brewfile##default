@@ -63,6 +63,8 @@ brew "bat"
 brew "coreutils"
 # git diff viewer
 brew "git-delta"
+# version manager
+brew "asdf"
 
 
 # automation and search

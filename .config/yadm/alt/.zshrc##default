@@ -72,6 +72,16 @@ zstyle ':completion:*' list-colors ${(s.:.)LS_COLORS}
 zinit wait lucid atinit'eval "$(zoxide init zsh)"' nocd for zdharma/null
 
 ########################################
+# ASDF for language version management
+########################################
+
+# load asdf
+zinit wait"0a" lucid atinit'source "$(brew --prefix asdf)/asdf.sh"' nocd for zdharma/null
+# load asdf direnv plugin
+zinit wait"0b" lucid atinit'eval "$(asdf exec direnv hook bash)"' nocd for zdharma/null
+direnv() { asdf exec direnv "$@"; }
+
+########################################
 # Plugins
 ########################################
 
