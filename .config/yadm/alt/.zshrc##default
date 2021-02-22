@@ -99,6 +99,16 @@ bindkey -M vicmd 'j' history-substring-search-down
 zinit ice wait"0b" lucid blockf
 zinit light zsh-users/zsh-completions
 
+# preferred comletion order
+zstyle ':completion:*' completer _expand _complete _ignored _approximate
+# case insensitive
+zstyle ':completion:*' matcher-list 'm:{a-z}={A-Z}'
+
+# Better SSH/Rsync/SCP Autocomplete
+zstyle ':completion:*:(scp|rsync):*' tag-order ' hosts:-ipaddr:ip\ address hosts:-host:host files'
+zstyle ':completion:*:(ssh|scp|rsync):*:hosts-host' ignored-patterns '*(.|:)*' loopback ip6-loopback localhost ip6-localhost broadcasthost
+zstyle ':completion:*:(ssh|scp|rsync):*:hosts-ipaddr' ignored-patterns '^(<->.<->.<->.<->|(|::)([[:xdigit:].]##:(#c,2))##(|%*))' '127.0.0.<->' '255.255.255.255' '::1' 'fe80::*'
+
 # FZF
 zinit ice lucid wait'0b' from"gh-r" as"program"
 zinit light junegunn/fzf
@@ -110,8 +120,8 @@ zinit ice lucid wait'0c' multisrc"shell/{completion,key-bindings}.zsh" id-as"jun
 zinit light junegunn/fzf
 
 # FZF-TAB
-zinit ice wait"1" lucid
-zinit light Aloxaf/fzf-tab
+# zinit ice wait"1" lucid
+# zinit light Aloxaf/fzf-tab
 
 # SYNTAX HIGHLIGHTING
 zinit ice wait"0c" lucid atinit"zpcompinit;zpcdreplay"
