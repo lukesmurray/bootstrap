@@ -95,6 +95,9 @@ zinit wait lucid for \
         OMZP::ssh-agent \
         OMZP::tmux
 
+zinit wait lucid for \
+  "MichaelAquilina/zsh-you-should-use"
+
 # AUTOSUGGESTIONS
 # max buffer to complete (avoid completing large pasted text)
 ZSH_AUTOSUGGEST_BUFFER_MAX_SIZE=20
