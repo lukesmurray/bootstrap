@@ -42,8 +42,8 @@ hide_window_decorations titlebar-only
 ################################################################
 
 # creating splits
-map ctrl+a>- launch --location=hsplit
-map ctrl+a>shift+- launch --location=vsplit
+map ctrl+a>- launch --location=hsplit --cwd=current
+map ctrl+a>shift+- launch --location=vsplit --cwd=current
 
 # moving splits
 map ctrl+a>shift+, move_window left
