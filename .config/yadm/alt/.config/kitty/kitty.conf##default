@@ -70,6 +70,8 @@ map ctrl+a>9 goto_tab 9
 
 map ctrl+a>ctrl+h previous_tab
 map ctrl+a>ctrl+l next_tab
+map ctrl+a>shift+7 close_tab
+
 
 map ctrl+a>ctrl+shift+, move_tab_forward
 map ctrl+a>ctrl+shift+. move_tab_backward
