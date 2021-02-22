@@ -109,7 +109,11 @@ function guakeApp({
   followsMouse,
   hideOnBlur,
 }) {
-  Key.on(key, modifiers, async function () {
+  Key.on(key, modifiers, async function (_, repeat) {
+    // ignore keyboard repeats
+    if (repeat) {
+      return;
+    }
     let [app, opened] = await startApp(appName, { focus: false });
 
     // if the app started
