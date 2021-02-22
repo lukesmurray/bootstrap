@@ -78,7 +78,7 @@ zinit wait lucid atinit'eval "$(zoxide init zsh)"' nocd for zdharma/null
 # load asdf
 zinit wait"0a" lucid atinit'source "$(brew --prefix asdf)/asdf.sh"' nocd for zdharma/null
 # load asdf direnv plugin
-zinit wait"0b" lucid atinit'eval "$(asdf exec direnv hook bash)"' nocd for zdharma/null
+zinit wait"0b" lucid atinit'eval "$(asdf exec direnv hook zsh)"' nocd for zdharma/null
 direnv() { asdf exec direnv "$@"; }
 
 ########################################

@@ -46,6 +46,16 @@ Edit your dotfiles in an editor.
 cd; yadm list -a | xargs ${EDITOR}
 ```
 
+Creating a python virtual environment.
+
+```sh
+# set local python version (sets .tool-versions)
+asdf local python <PYTHON_VERSION>
+# add the following to .envrc. use asdf caches the plugin environment.  layout python creates a virtual environment.
+# use asdf
+# layout python
+```
+
 ## Todo
 
 - Alfred - store key somewhere

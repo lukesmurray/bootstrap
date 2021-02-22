@@ -95,6 +95,10 @@ asdf global nodejs "$(asdf latest nodejs)"
 asdf plugin-add direnv
 asdf install direnv latest
 asdf global direnv "$(asdf latest direnv)"
+# add python plugin
+asdf plugin add python
+asdf install python latest
+asdf global python "$(asdf latest python)"
 
 # zsh
 
