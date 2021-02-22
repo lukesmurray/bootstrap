@@ -20,3 +20,12 @@ alias mergepdf='gs -q -dNOPAUSE -dBATCH -sDEVICE=pdfwrite -sOutputFile=_merged.p
 
 # get the last branches
 alias lb="git for-each-ref --sort=-committerdate --format='%(committerdate:short): %(align:30,left)%(refname:short)%(end) %(contents:subject)' refs/heads/"
+
+# alias for boostrap
+alias bootstrap="yadm bootstrap"
+
+# make ls use colors
+alias ls='ls -G'
+
+# use bat instead of cat
+alias cat='bat'

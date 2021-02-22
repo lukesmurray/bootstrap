@@ -53,6 +53,16 @@ brew "terminal-notifier"
 brew "docker-compose"
 # svn for fonts
 brew "svn"
+# display directories as trees
+brew "tree"
+# alternative for lsl
+brew "exa"
+# alternative to cat
+brew "bat"
+# gnu coreutils useful for scripts
+brew "coreutils"
+# git diff viewer
+brew "git-delta"
 
 
 # automation and search

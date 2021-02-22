@@ -33,6 +33,8 @@
 	# make git case sensitive, helps avoid bugs
 	ignorecase = false
 
+	pager = delta
+
 [color]
 
 	# Use colors in Git commands that are capable of colored output when
@@ -41,24 +43,34 @@
 
 [color "branch"]
 
-	# current = yellow reverse
-	# local = yellow
-	# remote = green
-
-[color "diff"]
-
-	meta = 11  # meta information is yellow (ansi 256 color code)
-	frag = magenta bold  # line info
-	commit = yellow bold  # commit header
-	old = red bold  # removed lines
-	new = green bold  # new lines
-	whitespace = red reverse  # whitespace is red with swapped fg and bg
+	current = green
+	local = white
 
 [color "status"]
 
-	# added = yellow
-	# changed = green
-	# untracked = cyan
+	added = green
+	changed = blue
+	untracked = magenta
+	deleted = red
+
+[delta]
+
+    features = side-by-side line-numbers decorations
+	syntax-theme = "ansi-dark"
+    plus-style = syntax "#003800"
+    minus-style = syntax "#3f0001"
+
+[delta "decorations"]
+    commit-decoration-style = bold yellow box ul
+    file-style = bold yellow ul
+    file-decoration-style = none
+    hunk-header-decoration-style = cyan box ul
+
+[delta "line-numbers"]
+    line-numbers-left-style = cyan
+    line-numbers-right-style = cyan
+    line-numbers-minus-style = 124
+    line-numbers-plus-style = 28
 
 [diff]
 

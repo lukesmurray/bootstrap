@@ -57,6 +57,12 @@ zinit ice depth=1; zinit light romkatv/powerlevel10k
 # To customize prompt, run `p10k configure` or edit ~/.p10k.zsh.
 [[ ! -f ~/.p10k.zsh ]] || source ~/.p10k.zsh
 
+########################################
+# Colors
+########################################
+zinit ice atclone"gdircolors -b LS_COLORS > c.zsh" atpull'%atclone' pick"c.zsh" nocompile'!'
+zinit light trapd00r/LS_COLORS
+zstyle ':completion:*' list-colors ${(s.:.)LS_COLORS}
 
 ########################################
 # Zoxide for Autojump
@@ -102,12 +108,15 @@ zinit light zsh-users/zsh-completions
 # preferred comletion order
 zstyle ':completion:*' completer _expand _complete _ignored _approximate
 # case insensitive
-zstyle ':completion:*' matcher-list 'm:{a-z}={A-Z}'
+zstyle ':completion:*' matcher-list 'm:{[:lower:][:upper:]}={[:upper:][:lower:]}' 'm:{[:lower:][:upper:]}={[:upper:][:lower:]} l:|=* r:|=*' 'm:{[:lower:][:upper:]}={[:upper:][:lower:]} l:|=* r:|=*' 'm:{[:lower:][:upper:]}={[:upper:][:lower:]} l:|=* r:|=*'
 
-# Better SSH/Rsync/SCP Autocomplete
-zstyle ':completion:*:(scp|rsync):*' tag-order ' hosts:-ipaddr:ip\ address hosts:-host:host files'
-zstyle ':completion:*:(ssh|scp|rsync):*:hosts-host' ignored-patterns '*(.|:)*' loopback ip6-loopback localhost ip6-localhost broadcasthost
-zstyle ':completion:*:(ssh|scp|rsync):*:hosts-ipaddr' ignored-patterns '^(<->.<->.<->.<->|(|::)([[:xdigit:].]##:(#c,2))##(|%*))' '127.0.0.<->' '255.255.255.255' '::1' 'fe80::*'
+# don't require dot prefix for files
+setopt glob_dots
+
+# don't sort ssh completion
+zstyle ':completion:*:ssh:*' sort false
+# don't sort git checkout completion
+zstyle ':completion:*:git-checkout:*' sort false
 
 # FZF
 zinit ice lucid wait'0b' from"gh-r" as"program"
@@ -119,9 +128,34 @@ zinit light junegunn/fzf
 zinit ice lucid wait'0c' multisrc"shell/{completion,key-bindings}.zsh" id-as"junegunn/fzf_completions" pick"/dev/null"
 zinit light junegunn/fzf
 
+
+# Use fd (https://github.com/sharkdp/fd) instead of the default find
+# command for listing path candidates.
+# - The first argument to the function ($1) is the base path to start traversal
+# - See the source code (completion.{bash,zsh}) for the details.
+_fzf_compgen_path() {
+  fd --hidden --follow --exclude ".git" . "$1"
+}
+
+# Use fd to generate the list for directory completion
+_fzf_compgen_dir() {
+  fd --type d --hidden --follow --exclude ".git" . "$1"
+}
+
+# Setting fd as the default source for fzf
+# follow symlinks, exclude git, show hidden files and directories
+export FZF_DEFAULT_COMMAND='fd --type f --hidden --follow --exclude .git'
+
+# To apply the command to CTRL-T as well
+export FZF_CTRL_T_COMMAND="$FZF_DEFAULT_COMMAND"
+
 # FZF-TAB
-# zinit ice wait"1" lucid
-# zinit light Aloxaf/fzf-tab
+zinit ice wait"1" lucid
+zinit light Aloxaf/fzf-tab
+
+# # preview directories with exa and files with bat
+zstyle ':fzf-tab:complete:*' fzf-preview '[[ -f $realpath ]]  && bat --style=numbers --color=always --line-range :500 $realpath || [[ -d $realpath ]] && exa -1 --color=always $realpath'
+
 
 # SYNTAX HIGHLIGHTING
 zinit ice wait"0c" lucid atinit"zpcompinit;zpcdreplay"
