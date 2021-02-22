@@ -34,6 +34,9 @@ tab_bar_style powerline
 # 2 tabs beforee show tab bar
 tab_bar_min_tabs 2
 
+# hide the title bar
+hide_window_decorations titlebar-only
+
 ################################################################
 # Vim/Tmux Split Behavior
 ################################################################
