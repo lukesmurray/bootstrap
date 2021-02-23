@@ -98,7 +98,7 @@ asdf global direnv "$(asdf latest direnv)"
 # add python plugin
 asdf plugin add python
 asdf install python latest
-asdf global python "$(asdf latest python)"
+asdf global python system
 
 # zsh
 
