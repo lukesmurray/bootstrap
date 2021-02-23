@@ -71,6 +71,7 @@ else
     echo_warn "Syncing brew packages with brew bundle"
     brew bundle install --global
     brew bundle --force cleanup --global
+    brew cleanup
 fi
 
 # npm
