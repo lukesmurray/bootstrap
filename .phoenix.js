@@ -43,7 +43,7 @@ const full = {
 };
 
 // the actual applications
-guakeApp({
+quakeApp({
   key: "`",
   modifiers: ["cmd"],
   appName: "kitty",
@@ -51,7 +51,7 @@ guakeApp({
   followsMouse: true,
   hideOnBlur: true,
 });
-guakeApp({
+quakeApp({
   key: "s",
   modifiers: ["alt"],
   appName: "Slack",
@@ -59,7 +59,7 @@ guakeApp({
   followsMouse: true,
   hideOnBlur: false,
 });
-guakeApp({
+quakeApp({
   key: "m",
   modifiers: ["alt"],
   appName: "Messages",
@@ -67,7 +67,7 @@ guakeApp({
   followsMouse: true,
   hideOnBlur: false,
 });
-guakeApp({
+quakeApp({
   key: "p",
   modifiers: ["alt"],
   appName: "Spotify",
@@ -75,7 +75,7 @@ guakeApp({
   followsMouse: true,
   hideOnBlur: false,
 });
-guakeApp({
+quakeApp({
   key: "r",
   modifiers: ["alt"],
   appName: "Roam Research",
@@ -83,7 +83,7 @@ guakeApp({
   followsMouse: true,
   hideOnBlur: false,
 });
-guakeApp({
+quakeApp({
   key: "z",
   modifiers: ["alt"],
   appName: "Zotero",
@@ -93,7 +93,7 @@ guakeApp({
 });
 
 /**
- *
+ * Create a keyboard event listener which implements a quake app
  * @param {string} key the key which triggers the app
  * @param {string[]} modifiers the modifiers which must be used in combination with the key (["alt", "ctrl"])
  * @param {string} appName the name of the app
@@ -101,7 +101,7 @@ guakeApp({
  * @param {followsMouse} boolean whether the app should open in the screen containing the mouse
  * @param {hideOnBlur} boolean whether the window should hide when it loses focus
  */
-function guakeApp({
+function quakeApp({
   key,
   modifiers,
   appName,
