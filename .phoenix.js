@@ -84,11 +84,11 @@ guakeApp({
   hideOnBlur: false,
 });
 guakeApp({
-  key: "c",
+  key: "z",
   modifiers: ["alt"],
-  appName: "Code",
-  position: rightHalf,
-  followsMouse: false,
+  appName: "Zotero",
+  position: leftHalf,
+  followsMouse: true,
   hideOnBlur: false,
 });
 
