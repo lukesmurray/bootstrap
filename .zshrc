@@ -2,6 +2,13 @@
 
 # inspired by https://github.com/crivotz/dot_files/blob/master/linux/zplugin/zshrc
 
+# PROFILE=1
+if [[ $PROFILE == 1 ]]; then
+  zmodload zsh/zprof
+fi
+
+
+
 ########################################
 # Instant Prompt
 ########################################
@@ -231,4 +238,9 @@ setopt HIST_FIND_NO_DUPS
 
 # turn off bell
 unsetopt BEEP
+
+if [[ $PROFILE == 1 ]]; then
+  zprof
+  unset $PROFILE
+fi
 

@@ -6,6 +6,10 @@
 // helper for finding application names at the bottom of the file
 // while developing run log stream --process Phoenix in a console
 
+// KNOWN ISSUE
+// doesn't work on minimized apps
+// https://github.com/kasper/phoenix/issues/269
+
 // common screen locations
 const topHalf = {
   left: 0,
@@ -99,6 +103,14 @@ quakeApp({
   followsMouse: true,
   hideOnBlur: false,
 });
+quakeApp({
+  key: "u",
+  modifiers: ["alt"],
+  appName: "zoom.us",
+  position: full,
+  followsMouse: true,
+  hideOnBlur: false,
+});
 
 /**
  * Create a keyboard event listener which implements a quake app
@@ -127,13 +139,14 @@ function quakeApp({
     // if the app started
     if (app !== undefined) {
       // move the app to the currently active space
-      const space = moveAppToActiveSpace(app, followsMouse);
+      const { moved, space } = moveAppToActiveSpace(app, followsMouse);
 
       // set the app position
       setAppPosition(app, position, space);
 
-      // show or hide the app
-      if (app.isActive() && !opened) {
+      // hide the app if it is active and wasn't just opened or moved to
+      // a new space
+      if (app.isActive() && !opened && !moved) {
         app.hide();
       } else {
         app.focus();
@@ -176,6 +189,9 @@ function setAppPosition(app, relativeFrame, space) {
     const right = screen.x + screen.width - relativeFrame.right * screen.width;
     const bottom =
       screen.y + screen.height - relativeFrame.bottom * screen.height;
+    if (mainWindow.isFullScreen()) {
+      mainWindow.setFullScreen(false);
+    }
     mainWindow.setTopLeft({
       x: left,
       y: top,
@@ -188,26 +204,35 @@ function setAppPosition(app, relativeFrame, space) {
 }
 
 /**
- *  Move the passed in App to the currently active space
+ * Move the passed in App to the currently active space
+ * Returns whether the app was moved and the space the app is now in.
  * @param {App} app the application to move to the active space
  * @param {boolean} followsMouse whether the app should open in the screen containing the mouse or the key with keyboard focus
  */
 function moveAppToActiveSpace(app, followsMouse) {
   const activeSpace = followsMouse ? mouseSpace() : Space.active();
   const mainWindow = app.mainWindow(); // get app window
+  let moved = false; // boolean if the app was moved to a new space
   if (mainWindow.spaces().length > 1) {
     // check one space per screen
     throw new Error(DISPLAYS_HAVE_SEPARATE_SPACES);
   }
   if (activeSpace !== undefined) {
-    // remove window from all spaces it is currently in
-    mainWindow.spaces().forEach((space) => {
-      space.removeWindows([mainWindow]);
-    });
-    // add window to active space
-    activeSpace.addWindows([mainWindow]);
+    // check if the main window was moved
+    moved = !!!(
+      mainWindow.spaces().length > 0 &&
+      mainWindow.spaces()[0].isEqual(activeSpace)
+    );
+    if (moved) {
+      // otherwise remove the main window from the spaces it is in
+      mainWindow.spaces().forEach((space) => {
+        space.removeWindows([mainWindow]);
+      });
+      // add window to active space
+      activeSpace.addWindows([mainWindow]);
+    }
   }
-  return activeSpace;
+  return { moved, space: activeSpace };
 }
 
 /**

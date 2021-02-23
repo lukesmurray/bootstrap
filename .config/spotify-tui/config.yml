@@ -1,2 +1,4 @@
 behavior:
+  # make the liked icon start with the word like so we can query for whether the currently playing song is liked in bash
+  # couldn't figure out how to query for the heart in bash
   liked_icon: liked ♥
