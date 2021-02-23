@@ -29,3 +29,6 @@ export BAT_THEME="ansi-dark"
 
 # don't check node js signatures
 export NODEJS_CHECK_SIGNATURES="no"
+
+# add bin to path
+export PATH="$PATH:$HOME/.bin"

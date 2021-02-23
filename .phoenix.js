@@ -91,6 +91,14 @@ quakeApp({
   followsMouse: true,
   hideOnBlur: false,
 });
+quakeApp({
+  key: "c",
+  modifiers: ["alt"],
+  appName: "Code",
+  position: rightHalf,
+  followsMouse: true,
+  hideOnBlur: false,
+});
 
 /**
  * Create a keyboard event listener which implements a quake app

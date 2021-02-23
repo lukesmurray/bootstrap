@@ -169,6 +169,15 @@ zinit light Aloxaf/fzf-tab
 # # preview directories with exa and files with bat
 zstyle ':fzf-tab:complete:*' fzf-preview '[[ -f $realpath ]]  && bat --style=numbers --color=always --line-range :500 $realpath || [[ -d $realpath ]] && exa -1 --color=always $realpath'
 
+# SPT Completions (completions for spotify tui)
+zinit light-mode lucid wait has"spt" for \
+  id-as"spt_completion" \
+  as"completion" \
+  atclone"spt --completions zsh > _spt" \
+  atpull"%atclone" \
+  run-atpull \
+    zdharma/null
+
 
 # SYNTAX HIGHLIGHTING
 zinit ice wait"0c" lucid atinit"zpcompinit;zpcdreplay"

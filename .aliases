@@ -27,5 +27,8 @@ alias bootstrap="yadm bootstrap"
 # make ls use colors
 alias ls='ls -G'
 
+# view all info in a folder
+alias ll='ls -a -l -G'
+
 # use bat instead of cat
 alias cat='bat'

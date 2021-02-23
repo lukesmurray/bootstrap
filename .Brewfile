@@ -65,6 +65,11 @@ brew "coreutils"
 brew "git-delta"
 # version manager
 brew "asdf"
+# ffmpeg for transforming videos
+# args from https://gist.github.com/Vestride/278e13915894821e1d6f
+brew "ffmpeg", args: ["with-libvpx","with-libvorbis","with-fdk-aac", "with-opus"]
+# terminal spotify player
+brew "spotify-tui"
 
 
 # automation and search

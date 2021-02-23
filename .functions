@@ -4,8 +4,8 @@
 #
 # source one or more files first checking that they are files and are readable.
 function sourcep() {
-    for file in "$@" ; do
-        [[ -r "$file" && -f "$file" ]] && source "$file";
+    for file in "$@"; do
+        [[ -r "$file" && -f "$file" ]] && source "$file"
     done
 }
 
@@ -13,8 +13,8 @@ function sourcep() {
 #
 # touch a file and make directories if needed
 mktouch() {
-    for file in "$@" ; do
-        mkdir -p "$(dirname "$file")" && touch "$file";
+    for file in "$@"; do
+        mkdir -p "$(dirname "$file")" && touch "$file"
     done
 }
 
@@ -22,8 +22,8 @@ mktouch() {
 #
 # touch a file and make directories if needed then add to yadm
 function yadmtouch() {
-    for file in "$@" ; do
-        mktouch "$file" && yadm add "$file";
+    for file in "$@"; do
+        mktouch "$file" && yadm add "$file"
     done
 }
 
@@ -32,12 +32,12 @@ function yadmtouch() {
 # backup application settings with mackup and add them to yadm
 function mackup_backup() {
     # Backup your application settings.
-    mackup backup;
+    mackup backup
     # add application settings to yadm
-    fd . ./.config/mackup | xargs yadm add;
+    fd . ./.config/mackup | xargs yadm add
 
     # TODO: maybe assert git directory is clean
-    echo "run yadm status and commit any new application settings";
+    echo "run yadm status and commit any new application settings"
 }
 
 # ask question [Y|N]
@@ -79,13 +79,12 @@ ask() {
 
         # Check if the reply is valid
         case "$reply" in
-            Y*|y*) return 0 ;;
-            N*|n*) return 1 ;;
+        Y* | y*) return 0 ;;
+        N* | n*) return 1 ;;
         esac
 
     done
 }
-
 
 # echo messages with syntax highlighting
 # example
@@ -105,15 +104,15 @@ function echo_error() { echo -e '\033[1;31mERROR: '"$1"'\033[0m'; }
 # > if command_exists brew ; then
 #      brew update
 #   fi
-function command_exists () { 
-    command -v "$1" &> /dev/null ; 
+function command_exists() {
+    command -v "$1" &>/dev/null
 }
 
 # clone a git url to a specific path
 clone() {
-    if (( $# != 1 ))
-    then echo "usage: clone() giturl";
-    return 1
+    if (($# != 1)); then
+        echo "usage: clone() giturl"
+        return 1
     fi
     # extract repo name and hostname from giturl
     local url=$1:l
@@ -138,33 +137,67 @@ clone() {
 # resized to 300 dpi, and sharpened
 # finally tesseract is used to convert the image
 # usage 1. take a screenshot, 2. pbtext
-pbtext () {
-  pngpaste - | convert -units PixelsPerInch - -colorspace gray -fill white -density 300 -sharpen 0x1 - | tesseract --dpi 300 stdin stdout | tee >(pbcopy)
+pbtext() {
+    pngpaste - | convert -units PixelsPerInch - -colorspace gray -fill white -density 300 -sharpen 0x1 - | tesseract --dpi 300 stdin stdout | tee >(pbcopy)
 }
 
 # get the title text from a link in the clipboard, and replace the link
 # in the clipboard with a markdown link
-mdlink ()  {
-  echo "[$(wget -qO- $(pbpaste) | perl -l -0777 -ne 'print $1 if /<title.*?>\s*(.*?)\s*<\/title/si')]($(pbpaste))" | tee >(pbcopy)
+mdlink() {
+    echo "[$(wget -qO- $(pbpaste) | perl -l -0777 -ne 'print $1 if /<title.*?>\s*(.*?)\s*<\/title/si')]($(pbpaste))" | tee >(pbcopy)
 }
 
-removeNewLines ()  {
-  pbpaste | tr -d '\n' | pbcopy
+removeNewLines() {
+    pbpaste | tr -d '\n' | pbcopy
 }
 
-glocal () {
-    echo "### Adding any wip files";
-    git add .;
-    echo "### Committing files with a temporary commit";
-    git commit --no-verify -am 'local commit - work in progress';
-    echo "### Checking out branch";
-    git checkout "$1";
+glocal() {
+    echo "### Adding any wip files"
+    git add .
+    echo "### Committing files with a temporary commit"
+    git commit --no-verify -am 'local commit - work in progress'
+    echo "### Checking out branch"
+    git checkout "$1"
     x="$(git log -1 --pretty=%B)"
     if [ "$x" = "local commit - work in progress" ]; then
-        echo "### Undoing last commit";
+        echo "### Undoing last commit"
         git reset --soft HEAD^
     else
         echo "### Not undoing last commit"
     fi
     echo "glocal complete"
+}
+
+heart() {
+    # get the song status as a string and check if the command succeeded
+    local song_status
+    song_status="$(spt playback -s)"
+    song_status_succeded=$?
+    if [[ $song_status_succeded == 0 ]]; then
+        # if song status starts with `liked`
+        if [[ $song_status == liked* ]]; then
+            echo "Already hearted"
+        else
+            spt playback --like >/dev/null && echo "Hearted" || echo "spt error"
+        fi
+    else
+        echo "spt error"
+    fi
+}
+
+unheart() {
+    # get the song status as a string and check if the command succeeded
+    local song_status
+    song_status="$(spt playback -s)"
+    song_status_succeded=$?
+    if [[ $song_status_succeded == 0 ]]; then
+        # if song status starts with `liked`
+        if [[ $song_status == liked* ]]; then
+            spt playback --like >/dev/null && echo "Unhearted" || echo "spt error"
+        else
+            echo "Already unhearted"
+        fi
+    else
+        echo "spt error"
+    fi
 }
