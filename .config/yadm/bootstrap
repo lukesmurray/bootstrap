@@ -18,28 +18,27 @@ if ask "Decrypt files from yadm?" N; then
     echo_warn "Decrypting files..."
 
     # decrypt files
-    yadm decrypt;
+    yadm decrypt
 
     # fix permissions on decrypted files
 
     # private gpg
-    if [[ -f ~/.gnupg/private.key ]] ; then 
-         chmod 600 ~/.gnupg/private.key;
+    if [[ -f ~/.gnupg/private.key ]]; then
+        chmod 600 ~/.gnupg/private.key
     fi
 
     # private ssh
-    if [[ -f ~/.ssh/id_ed25519.key ]] ; then 
-         chmod 600 ~/.ssh/id_ed25519.key;
+    if [[ -f ~/.ssh/id_ed25519.key ]]; then
+        chmod 600 ~/.ssh/id_ed25519.key
     fi
 
     # private ssh rsa
-    if [[ -f ~/.ssh/id_rsa ]] ; then
-        chmod 600 ~/.ssh/id_rsa;
+    if [[ -f ~/.ssh/id_rsa ]]; then
+        chmod 600 ~/.ssh/id_rsa
     fi
 else
     echo_ok "Skipping decrpyt step"
 fi
-
 
 # requires xcode and tools!
 xcode-select -p || {
@@ -77,7 +76,7 @@ fi
 # npm
 # list of packages to install globally with npm
 NPM_PACKAGES=(
-	yarn
+    yarn
     @jarred/git-peek
 )
 if command_exists npm; then
@@ -128,7 +127,6 @@ echo_warn "Updating zinit plugins."
 zinit update
 EOF
 
-
 # github
 
 # set up local uncommitted information
@@ -145,12 +143,11 @@ if [[ ! -f ~/.gitconfig.local ]]; then
     # setup github local
     if [[ $github_user && $github_email ]]; then
         # setup config
-        git config --file ~/.gitconfig.local user.name "$github_name";
-        git config --file ~/.gitconfig.local user.email "$github_email";
-        git config --file ~/.gitconfig.local github.user "$github_user";
+        git config --file ~/.gitconfig.local user.name "$github_name"
+        git config --file ~/.gitconfig.local user.email "$github_email"
+        git config --file ~/.gitconfig.local github.user "$github_user"
     fi
 fi
-
 
 github_name=$(git config --file ~/.gitconfig.local user.name)
 github_email=$(git config --file ~/.gitconfig.local user.email)
@@ -161,55 +158,54 @@ if [[ $github_email ]]; then
     # ssh
     if ask "Set up ssh key?" N; then
         # generate a private key if it doesn't exist
-        if [[ ! -f ~/.ssh/id_ed25519.key ]] ; then
+        if [[ ! -f ~/.ssh/id_ed25519.key ]]; then
             echo_warn "Setting up private ssh key."
 
-            ssh-keygen -t ed25519 -C ${github_email} -f ~/.ssh/id_ed25519.key <<< y
+            ssh-keygen -t ed25519 -C ${github_email} -f ~/.ssh/id_ed25519.key <<<y
         else
             echo_ok "Found existing ssh key"
         fi
 
         # generate a public key if it doesn't exist
-        if [[ ! -f ~/.ssh/id_ed25519.key.pub ]] ; then 
+        if [[ ! -f ~/.ssh/id_ed25519.key.pub ]]; then
             echo_warn "Setting up public ssh key."
 
-            ssh-keygen -y -f ~/.ssh/id_ed25519.key > ~/.ssh/id_ed25519.key.pub
+            ssh-keygen -y -f ~/.ssh/id_ed25519.key >~/.ssh/id_ed25519.key.pub
         fi
 
-        if [[ -f ~/.ssh/id_rsa && ! -f ~/.ssh/id_rsa.pub ]] ; then
+        if [[ -f ~/.ssh/id_rsa && ! -f ~/.ssh/id_rsa.pub ]]; then
             echo_warn "Setting up public ssh key."
 
-            ssh-keygen -y -f ~/.ssh/id_rsa > ~/.ssh/id_rsa.pub
+            ssh-keygen -y -f ~/.ssh/id_rsa >~/.ssh/id_rsa.pub
         fi
 
         echo_ok "adding ssh key to ssh-agent"
         # start ssh agent in background
         eval "$(ssh-agent -s)"
         # add ssh key to the ssh-agent
-        ssh-add -K ~/.ssh/id_ed25519.key;
-        if [[ -f ~/.ssh/id_rsa ]] ; then
+        ssh-add -K ~/.ssh/id_ed25519.key
+        if [[ -f ~/.ssh/id_rsa ]]; then
             ssh-add -K ~/.ssh/id_rsa
         fi
 
         # set ssh key permissions
-        chmod 644 ~/.ssh/id_ed25519.key.pub;
-        chmod 600 ~/.ssh/id_ed25519.key;
-        if [[ -f ~/.ssh/id_rsa ]] ; then
+        chmod 644 ~/.ssh/id_ed25519.key.pub
+        chmod 600 ~/.ssh/id_ed25519.key
+        if [[ -f ~/.ssh/id_rsa ]]; then
             chmod 644 ~/.ssh/id_rsa.pub
             chmod 600 ~/.ssh/id_rsa
         fi
     else
         echo_ok "skipping ssh key generation"
-    fi 
-
+    fi
 
     #gpg
-    if ask "Setup gpg key for commit signing?" N ;  then
+    if ask "Setup gpg key for commit signing?" N; then
 
         # create a script to generate the key
-        GPG_GEN_KEY_SCRIPT="${HOME}/.gpg-gen-key-script";
+        GPG_GEN_KEY_SCRIPT="${HOME}/.gpg-gen-key-script"
 
-        cat <<EOF > "${GPG_GEN_KEY_SCRIPT}"
+        cat <<EOF >"${GPG_GEN_KEY_SCRIPT}"
     %echo running gpg key generation
     %ask-passphrase
     Key-Type: default
@@ -220,7 +216,7 @@ if [[ $github_email ]]; then
 EOF
 
         # if private key exists then import it
-        if  [[ -f ~/.gnupg/private.key ]] ; then
+        if [[ -f ~/.gnupg/private.key ]]; then
             echo_ok "Found existing key, importing..."
             gpg --import ~/.gnupg/private.key
         fi
@@ -243,13 +239,13 @@ EOF
 
         if ask "Export gpg keys for upload and backup?" Y; then
             # export the key for import into github
-            rm -f ~/.gnupg/public.key;
-            rm -f ~/.gnupg/private.key;
-            gpg --output ~/.gnupg/public.key --armor --export "$GPG_KEY_ID";
-            gpg --output ~/.gnupg/private.key --armor --export-secret-key "$GPG_KEY_ID";
+            rm -f ~/.gnupg/public.key
+            rm -f ~/.gnupg/private.key
+            gpg --output ~/.gnupg/public.key --armor --export "$GPG_KEY_ID"
+            gpg --output ~/.gnupg/private.key --armor --export-secret-key "$GPG_KEY_ID"
             # set gpg key permissions
-            chmod 644 ~/.gnupg/public.key;
-            chmod 600 ~/.gnupg/private.key;
+            chmod 644 ~/.gnupg/public.key
+            chmod 600 ~/.gnupg/private.key
         fi
 
         if ask "Sign git commits with gpg key?" Y; then
@@ -270,12 +266,9 @@ EOF
         echo_ok "skipping gpg key generation"
     fi
 
-
 fi
 
-
-
-if ask "add sensitive data to yadm?" N ; then 
+if ask "add sensitive data to yadm?" N; then
     # encrypt with yadm
     echo_warn "encrypting sensistve data to yadm"
     yadm encrypt
@@ -283,8 +276,7 @@ else
     echo_ok "skipping yadm encryption"
 fi
 
-
-if  ask "set up macos defaults?" N ; then
+if ask "set up macos defaults?" N; then
     echo_warn "setting up mac os defaults"
     ./.macos
 else
@@ -300,6 +292,9 @@ echo_warn "Upload gpg key from "${HOME}/.gnupg/public.key" to github https://doc
 echo_warn "\tpbcopy < ~/.gnupg/public.key"
 echo_warn "Upload ssh key from "${HOME}/.ssh/id_ed25519.key.pub" to github https://docs.github.com/en/github/authenticating-to-github/adding-a-new-ssh-key-to-your-github-account"
 echo_warn "\tpbcopy < ~/.ssh/id_ed25519.key.pub"
+echo_warn "Setup your spotify password"
+echo_warn "\tsecurity add-generic-password -s spotifyd -D rust-keyring -a 1277366837 -w"
+echo_warn "\twhere 1277366837 is your spotify username"
 
 # done
 echo_ok "Bootstrapping complete"

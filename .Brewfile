@@ -3,7 +3,7 @@
 
 tap "homebrew/cask-fonts"
 tap "homebrew/cask"
-
+tap "homebrew/services"
 
 # bash 4
 brew "bash"
@@ -70,7 +70,10 @@ brew "asdf"
 brew "ffmpeg", args: ["with-libvpx","with-libvorbis","with-fdk-aac", "with-opus"]
 # terminal spotify player
 brew "spotify-tui"
-
+# background spotify daemon
+brew "spotifyd", restart_service: changed
+# interapplication messaging system
+brew "dbus", restart_service: changed
 
 # automation and search
 cask "alfred"
@@ -117,7 +120,6 @@ cask "vanilla"
 # content blocker
 cask "cold-turkey-blocker"
 
-
 # password manager
 mas "LastPass", id: 926036361
 # pdf reader
@@ -127,4 +129,4 @@ mas "Todoist: To-Do List & Tasks", id: 585829637
 # simpler bluetooth connections
 mas "Toothfairy", id: 1191449274
 # add block for safari
-mas "AdGuard for Safari", id: 1440147259 
+mas "AdGuard for Safari", id: 1440147259
