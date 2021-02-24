@@ -67,13 +67,17 @@ brew "git-delta"
 brew "asdf"
 # ffmpeg for transforming videos
 # args from https://gist.github.com/Vestride/278e13915894821e1d6f
-brew "ffmpeg", args: ["with-libvpx","with-libvorbis","with-fdk-aac", "with-opus"]
+brew "ffmpeg"
 # terminal spotify player
 brew "spotify-tui"
-# background spotify daemon
-brew "spotifyd", restart_service: changed
+# background spotify daemon (broken until https://github.com/Spotifyd/spotifyd/issues/719 is resolved)
+brew "spotifyd", restart_service: :changed
 # interapplication messaging system
-brew "dbus", restart_service: changed
+brew "dbus", restart_service: :changed
+# rust lang
+brew "rust"
+# manage compile and link flags for libraries
+brew "pkg-config"
 
 # automation and search
 cask "alfred"
