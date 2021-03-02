@@ -78,6 +78,8 @@ brew "dbus", restart_service: :changed
 brew "rust"
 # manage compile and link flags for libraries
 brew "pkg-config"
+# compile documents
+brew "pandoc"
 
 # automation and search
 cask "alfred"

@@ -116,10 +116,6 @@ zinit light zsh-users/zsh-autosuggestions
 # on up and down arrow search history
 zinit ice wait"0b" lucid atload'bindkey "$terminfo[kcuu1]" history-substring-search-up; bindkey "$terminfo[kcud1]" history-substring-search-down'
 zinit light zsh-users/zsh-history-substring-search
-bindkey '^[[A' history-substring-search-up
-bindkey '^[[B' history-substring-search-down
-bindkey -M vicmd 'k' history-substring-search-up
-bindkey -M vicmd 'j' history-substring-search-down
 
 # TAB COMPLETIONS
 zinit ice wait"0b" lucid blockf

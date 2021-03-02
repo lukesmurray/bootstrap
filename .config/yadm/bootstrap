@@ -127,6 +127,10 @@ echo_warn "Updating zinit plugins."
 zinit update
 EOF
 
+# duti
+echo_ok "Setting up default applications"
+duti "$HOME/.duti"
+
 # github
 
 # set up local uncommitted information

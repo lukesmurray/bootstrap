@@ -55,6 +55,20 @@ asdf local python <PYTHON_VERSION>
 # layout python
 ```
 
+Duti file
+
+Get the bundle id for an app using `mdls -name kMDItemCFBundleIdentifier -r SomeApp.app`
+Get the UTI for a file using `mdls -name kMDItemContentType -name kMDItemContentTypeTree -name kMDItemKind FILE`
+
+Duti files consist of
+
+```
+app_id    UTI    role
+```
+
+Roles are `all`, `viewer`, `editor`, `shell`, and `none`.
+See more info on the [man page](http://duti.sourceforge.net/duti.1.php).
+
 ## Todo
 
 - Alfred - store key somewhere
