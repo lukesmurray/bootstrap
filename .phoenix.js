@@ -119,6 +119,14 @@ quakeApp({
   followsMouse: true,
   hideOnBlur: false,
 });
+quakeApp({
+  key: "g",
+  modifiers: ["alt"],
+  appName: "Gmail",
+  position: leftHalf,
+  followsMouse: true,
+  hideOnBlur: false,
+});
 
 /**
  * Create a keyboard event listener which implements a quake app

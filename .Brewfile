@@ -80,6 +80,12 @@ brew "rust"
 brew "pkg-config"
 # compile documents
 brew "pandoc"
+# references for figures in pandoc markdown
+brew "pandoc-crossref"
+# download youtube videos
+brew "youtube-dl"
+# community driven man pages
+brew "tldr"
 
 # automation and search
 cask "alfred"
@@ -125,6 +131,8 @@ cask "font-roboto-mono-for-powerline"
 cask "vanilla"
 # content blocker
 cask "cold-turkey-blocker"
+# control monitor brightness
+cask "monitorcontrol"
 
 # password manager
 mas "LastPass", id: 926036361
