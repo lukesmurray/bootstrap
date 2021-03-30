@@ -133,9 +133,17 @@ cask "vanilla"
 cask "cold-turkey-blocker"
 # control monitor brightness
 cask "monitorcontrol"
+# access local host on browserstack
+cask "browserstacklocal"
+# vms for testing ie11
+cask "vmware-fusion"
+# sqlite db browser
+cask "db-browser-for-sqlite"
+# free password manager
+cask "bitwarden"
+# alternative browser
+cask "firefox"
 
-# password manager
-mas "LastPass", id: 926036361
 # pdf reader
 mas "Highlights – Export PDF Notes", id: 1498912833
 # todo list

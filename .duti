@@ -1,2 +1,6 @@
 com.microsoft.VSCode    com.netscape.javascript-source    viewer
 com.microsoft.VSCode    com.netscape.javascript-source    editor
+com.microsoft.VSCode    public.plain-text    editor
+com.microsoft.VSCode    public.plain-text    viewer 
+com.microsoft.VSCode    public.text    editor
+com.microsoft.VSCode    public.text    viewer
