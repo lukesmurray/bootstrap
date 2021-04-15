@@ -13,7 +13,7 @@ I use [yadm](https://github.com/TheLocehiliosan/yadm) to manage my dotfiles.
 - terminal
   - kitty terminal (for speed and battery life)
   - replication of a bunch of tmux features with `ctrl+a` as a prefix
-- quake style drop down applications
+- quake style drop down applications using phoenix
   - like iterm but for everything
 - gpg and ssh key generation
   - no more fiddling around, just hit yes and upload to github 🚀
@@ -25,8 +25,8 @@ Install your dotfiles (first time)
 ```sh
 # install homebrew
 /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
-# install yadm
-brew install yadm
+# install yadm and tools for decrypting yadm files
+brew install yadm gpg gnupg pinentry-mac
 # clone this repo and run the bootstrap script
 # on the first run you may want to say yes to things
 yadm clone --bootstrap -f https://github.com/lukesmurray/bootstrap.git ;
