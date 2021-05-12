@@ -139,3 +139,5 @@
 
     # include local settings
     path = ~/.gitconfig.local
+[init]
+	defaultBranch = main

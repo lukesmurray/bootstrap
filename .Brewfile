@@ -86,6 +86,16 @@ brew "pandoc-crossref"
 brew "youtube-dl"
 # community driven man pages
 brew "tldr"
+# ripgrep in rich documents
+brew "rga"
+# extract text from pdfs for rga
+brew "poppler"
+# bitwarden cli
+brew "bitwarden-cli"
+# delete files with a cli
+brew "ncdu"
+# access mysql
+brew "mysql-client"
 
 # automation and search
 cask "alfred"
@@ -143,6 +153,12 @@ cask "db-browser-for-sqlite"
 cask "bitwarden"
 # alternative browser
 cask "firefox"
+# prototyping application
+cask "figma"
+# gui for mysql
+cask "mysqlworkbench"
+# a better gui for mysql
+cask "sequel-ace"
 
 # pdf reader
 mas "Highlights – Export PDF Notes", id: 1498912833
