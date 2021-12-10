@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 
 # source bashrc
-alias zource="source ~/.zshrc";
+alias zource="source ~/.zshrc"
 
 # Show/hide hidden files in Finder
 alias show="defaults write com.apple.finder AppleShowAllFiles -bool true && killall Finder"
@@ -32,3 +32,9 @@ alias ll='ls -a -l -G'
 
 # use bat instead of cat
 alias cat='bat'
+
+# somehow open -a "Visual Studio Code" is much faster than "code"
+alias code='open -a "Visual Studio Code"'
+
+# make kitty copy settings to ssh hosts
+alias ssh='kitty +kitten ssh'

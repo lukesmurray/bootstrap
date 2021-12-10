@@ -193,7 +193,7 @@ unheart() {
     if [[ $song_status_succeded == 0 ]]; then
         # if song status starts with `liked`
         if [[ $song_status == liked* ]]; then
-            spt playback --like >/dev/null && echo "Unhearted" || echo "spt error"
+            spt playback --dislike >/dev/null && echo "Unhearted" || echo "spt error"
         else
             echo "Already unhearted"
         fi

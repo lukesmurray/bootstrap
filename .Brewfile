@@ -96,6 +96,8 @@ brew "bitwarden-cli"
 brew "ncdu"
 # access mysql
 brew "mysql-client"
+# paste images into files like pbpaste for text
+brew "pngpaste"
 
 # automation and search
 cask "alfred"

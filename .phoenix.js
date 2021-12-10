@@ -127,6 +127,14 @@ quakeApp({
   followsMouse: true,
   hideOnBlur: false,
 });
+quakeApp({
+  key: "o",
+  modifiers: ["alt"],
+  appName: "Obsidian",
+  position: leftHalf,
+  followsMouse: true,
+  hideOnBlur: false,
+});
 
 /**
  * Create a keyboard event listener which implements a quake app

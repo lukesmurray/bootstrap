@@ -38,3 +38,6 @@ export PATH="/usr/local/sbin:$PATH"
 
 # add mysql client to path
 export PATH="/usr/local/opt/mysql-client/bin:$PATH"
+
+# add local bin to path
+export PATH=$PATH:/Users/lukemurray/.local/bin
