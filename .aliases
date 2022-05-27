@@ -33,8 +33,6 @@ alias ll='ls -a -l -G'
 # use bat instead of cat
 alias cat='bat'
 
-# somehow open -a "Visual Studio Code" is much faster than "code"
-alias code='open -a "Visual Studio Code"'
 
 # make kitty copy settings to ssh hosts
 alias ssh='kitty +kitten ssh'
