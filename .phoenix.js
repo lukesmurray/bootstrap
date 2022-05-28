@@ -64,6 +64,14 @@ quakeApp({
   hideOnBlur: false,
 });
 quakeApp({
+  key: "d",
+  modifiers: ["alt"],
+  appName: "Discord",
+  position: leftHalf,
+  followsMouse: true,
+  hideOnBlur: false,
+});
+quakeApp({
   key: "m",
   modifiers: ["alt"],
   appName: "Messages",
@@ -108,14 +116,6 @@ quakeApp({
   modifiers: ["alt"],
   appName: "zoom.us",
   position: full,
-  followsMouse: true,
-  hideOnBlur: false,
-});
-quakeApp({
-  key: "h",
-  modifiers: ["alt"],
-  appName: "Highlights",
-  position: leftHalf,
   followsMouse: true,
   hideOnBlur: false,
 });
@@ -362,7 +362,7 @@ const DISPLAYS_HAVE_SEPARATE_SPACES = `Must set Apple menu > System Preferences 
 //   const array = App.all()
 //     .map((a) => a.name())
 //     .sort();
-//   let chunk = 10;
+//   let chunk = 3;
 //   Phoenix.log();
 //   Phoenix.log("************ APPLICATIONS START *************");
 //   for (let i = 0, j = array.length; i < j; i += chunk) {
