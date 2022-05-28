@@ -93,3 +93,44 @@ if you want to clean up zinit plugins
 ```
 zinit delete --clean
 ```
+
+# bootstrap 2
+
+## install dotfiles
+
+
+```sh
+# install homebrew
+/bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
+# install yadm and tools for decrypting yadm files
+brew install yadm gpg gnupg pinentry-mac
+# clone this repo and run the bootstrap script
+# on the first run you may want to say yes to things
+yadm clone --bootstrap -f https://github.com/lukesmurray/bootstrap.git ;
+```
+
+## edit dotfiles
+
+```sh
+# This sets the `GIT_DIR` and `GIT_WORK_TREE` so that `vscode` can show the proper git stuff
+yadm enter code ~`
+
+# Run the command to disable all extensions for the workspace
+# Extensions: Disable all installed extensions for this workspace
+
+# Enable vim so you can edit the dot files
+```
+
+## adding files
+
+Everything is ignored by default by `~/.gitignore`.
+To add a file you need to unignore the file in `~/.gitignore` then run `yadm add FILE`
+
+[See this stack overflow post for the unignore patterns](https://stackoverflow.com/a/29932318/11499360)
+
+
+## opening all tracked files in vscode
+
+```sh
+yadm list -a | xargs code   
+```
