@@ -4,6 +4,7 @@
 tap "homebrew/cask-fonts"
 tap "homebrew/cask"
 tap "homebrew/services"
+tap "microsoft/mssql-release"
 
 # bash 4
 brew "bash"
@@ -98,6 +99,12 @@ brew "ncdu"
 brew "mysql-client"
 # paste images into files like pbpaste for text
 brew "pngpaste"
+# driver for connecting to sql server
+brew "msodbcsql17"
+# old openssl for msodbcsql17 bug
+brew "openssl@1.1"
+# php for spotify mini
+brew "php"
 
 # automation and search
 cask "alfred"
@@ -109,6 +116,8 @@ cask "backblaze"
 cask "balenaetcher"
 # developer documentation
 cask "dash"
+# sql client
+cask "datagrip"
 # less blue light at night
 cask "flux"
 # browser
@@ -141,8 +150,6 @@ cask "docker"
 cask "font-roboto-mono-for-powerline"
 # hide menu bar icons
 cask "vanilla"
-# content blocker
-cask "cold-turkey-blocker"
 # control monitor brightness
 cask "monitorcontrol"
 # access local host on browserstack
@@ -162,10 +169,6 @@ cask "mysqlworkbench"
 # a better gui for mysql
 cask "sequel-ace"
 
-# pdf reader
-mas "Highlights – Export PDF Notes", id: 1498912833
-# todo list
-mas "Todoist: To-Do List & Tasks", id: 585829637
 # simpler bluetooth connections
 mas "Toothfairy", id: 1191449274
 # add block for safari
