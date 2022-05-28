@@ -117,15 +117,15 @@ clone() {
     # extract repo name and hostname from giturl
     local url=$1:l
     local url_without_suffix="${url%\.git}"
-    local reponame=$(basename $url_without_suffix)
-    local hostname=$(basename ${url_without_suffix%/${reponame}})
+    local reponame=$(basename "$url_without_suffix")
+    local hostname=$(basename "${url_without_suffix%/"${reponame}"}")
     local hostname=${hostname#*:}
 
     GITHUB_ROOT=~/Documents/repos/github
 
     # mkdir and clone if it does not exist
     mkdir -p "$GITHUB_ROOT/$hostname/"
-    [ -d "$GITHUB_ROOT/$hostname/$reponame" ] || git clone $url "$GITHUB_ROOT/$hostname/$reponame"
+    [ -d "$GITHUB_ROOT/$hostname/$reponame" ] || git clone "$url" "$GITHUB_ROOT/$hostname/$reponame"
     echo_ok "go get to work"
     echo_ok "cd $GITHUB_ROOT/$hostname/$reponame"
     echo "cd $GITHUB_ROOT/$hostname/$reponame" | pbcopy
@@ -200,4 +200,16 @@ unheart() {
     else
         echo "spt error"
     fi
+}
+
+# git commit browser
+fshow() {
+    git log --graph --color=always \
+        --format="%C(auto)%h%d %s %C(black)%C(bold)%cr" "$@" |
+        fzf --ansi --no-sort --reverse --tiebreak=index --bind=ctrl-s:toggle-sort \
+            --bind "ctrl-m:execute:
+                (grep -o '[a-f0-9]\{7\}' | head -1 |
+                xargs -I % sh -c 'git show --color=always % | less -R') << 'FZF-EOF'
+                {}
+FZF-EOF"
 }
