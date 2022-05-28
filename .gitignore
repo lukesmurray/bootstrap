@@ -3,7 +3,9 @@
 # Blacklist files/folders in same directory as the .gitignore file
 /*
 
-# Whitelist some files
+# Lists all non-ignored files in the dotfiles directory
+# Generate this list with `yadm list -a | pbcopy`
+# TODO(lukemurray): figure out how to generate directories as well
 !.Brewfile
 !.aliases
 !.asdfrc
@@ -22,7 +24,7 @@
 !.exports
 !.functions
 !.gitconfig
-!.github/README.md
+!.github/
 !.gitignore
 !.gitignore
 !.gitignore_global
