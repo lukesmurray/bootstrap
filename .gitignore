@@ -41,3 +41,4 @@
 !.tmux.conf.local
 !.tool-versions
 !.zshrc
+!Brewfile.lock.json
