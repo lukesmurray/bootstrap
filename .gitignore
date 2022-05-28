@@ -40,5 +40,8 @@
 !.tmux.conf
 !.tmux.conf.local
 !.tool-versions
+!.vscode/
+.vscode/*
+!.vscode/settings.json
 !.zshrc
 !Brewfile.lock.json

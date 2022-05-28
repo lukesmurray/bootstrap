@@ -1,0 +1,6 @@
+{
+    // exclude all files from search by default. otherwise vscode indexes everything and it takes forever
+    "files.exclude": {
+        "*": true
+    }
+}
