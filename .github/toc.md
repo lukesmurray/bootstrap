@@ -59,7 +59,15 @@ Casks are used to install closed source or GUI-only programs.
 
 ## .duti
 
-## .exports
+## .envrc
+
+Defines variables used to configure programs using
+
+```
+export VARNAME='value'
+```
+
+Also defines environment variables such as `path` and `fpath`.
 
 ## .functions
 
