@@ -1,4 +1,4 @@
-#!/usr/bin/env bash
+#!/usr/bin/env zsh
 
 # source bashrc
 alias zource="source ~/.zshrc"
@@ -32,9 +32,6 @@ alias ll='ls -a -l -G'
 
 # use bat instead of cat
 alias cat='bat'
-
-# move 
-alias code='code --extensions-dir "$HOME/.vscode_settings"'
 
 # make kitty copy settings to ssh hosts
 alias ssh='kitty +kitten ssh'
