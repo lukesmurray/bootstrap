@@ -53,6 +53,11 @@ Casks are used to install closed source or GUI-only programs.
 
 ## .config/yadm/bootstrap
 
+Bootstrap script for yadm.
+Can be executed using `yadm bootstrap`.
+
+<!-- TODO(lukemurray): fix the decryption step -->
+
 ## .config/yadm/encrypt
 
 ## .default-python-packages
@@ -93,6 +98,9 @@ Also defines environment variables such as `path` and `fpath`.
 
 ## .p10k.zsh
 
+Configuration file for [powerlevel10k](https://github.com/romkatv/powerlevel10k).
+Use this file to control the zsh prompt.
+
 ## .phoenix.js
 
 ## .ssh/config
@@ -104,6 +112,20 @@ Also defines environment variables such as `path` and `fpath`.
 ## .tool-versions
 
 ## .zshrc
+
+We use [zinit](https://github.com/zdharma-continuum/zinit) as a plugin manager for zsh.
+
+Zinit lets you load zsh plugins ([see zsh plugin standard](https://zdharma-continuum.github.io/zinit/wiki/zsh-plugin-standard/)) using the command `zinit load <user/repo>` or `zinit light <user/repo>`.
+`load` uses reporting so that you can track what the plugin does using `zinit report {plugin}`.
+
+Zinit lets you download single files using `zinit snippet <file-url>`.
+You can use `zinit ice` before a zinit command to control what happens once the file is loaded.
+Zinit maintains a list of [ice modifiers](https://github.com/zdharma-continuum/zinit#ice-modifiers) in the readme.
+
+| Action               | Command           |
+| :------------------- | :---------------- |
+| update zinit         | zinit self-update |
+| update zinit plugins | zinit update      |
 
 ## Brewfile.lock.json
 
