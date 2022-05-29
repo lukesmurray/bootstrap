@@ -30,14 +30,5 @@ export BAT_THEME="ansi-dark"
 # don't check node js signatures
 export NODEJS_CHECK_SIGNATURES="no"
 
-# add bin to path (custom functions)
-export PATH="$PATH:$HOME/.bin"
-
 # add sbin to path (homebrew)
 export PATH="/usr/local/sbin:$PATH"
-
-# add mysql client to path
-export PATH="/usr/local/opt/mysql-client/bin:$PATH"
-
-# add local bin to path
-export PATH=$PATH:/Users/lukemurray/.local/bin
