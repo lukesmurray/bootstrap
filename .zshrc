@@ -66,12 +66,17 @@ ZINIT_HOME="${XDG_DATA_HOME:-${HOME}/.local/share}/zinit/zinit.git"
 source "${ZINIT_HOME}/zinit.zsh"
 
 # disabled because it overwrites mcfly ctrl-r
-# ########################################
-# # zsh-vi-mode
-# ########################################
+########################################
+# zsh-vi-mode
+########################################
 
-# zinit ice depth=1 wait lucid
-# zinit light jeffreytse/zsh-vi-mode
+function zvm_after_init() {
+  # use mcfly to search history
+  zvm_bindkey viins '^R' mcfly-history-widget
+}
+
+zinit ice depth=1 wait lucid 
+zinit light jeffreytse/zsh-vi-mode
 
 # enables ctrl-p ctrl-n for next/previous history
 # enables surround plugin
