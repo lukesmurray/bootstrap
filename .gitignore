@@ -48,8 +48,6 @@
 !.p10k.zsh
 !.phoenix.js
 !.ssh/config
-!.tmux.conf
-!.tmux.conf.local
 !.tool-versions
 !.vscode/
 .vscode/*
