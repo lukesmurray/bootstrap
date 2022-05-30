@@ -13,8 +13,8 @@
 # source zshrc
 alias zource="source ~/.zshrc"
 
-# make ls use colors
-alias ls='ls -G'
+# use lsd instead of ls
+alias ls='lsd'
 
 # use bat instead of cat
 alias cat='bat'

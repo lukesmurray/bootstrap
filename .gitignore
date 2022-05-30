@@ -16,6 +16,9 @@
 !.config/bat/
 .config/bat/*
 !.config/bat/config
+!.config/lsd/
+.config/lsd/*
+!.config/lsd/config.yaml
 !.config/direnv/direnvrc
 !.config/kitty/
 .config/kitty/*

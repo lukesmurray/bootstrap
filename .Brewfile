@@ -19,8 +19,6 @@ brew "fd"
 brew "rg"
 # set default apps
 brew "duti"
-# simple watch file changes
-brew "entr"
 # store images in git
 brew "git-lfs"
 # sign commits
@@ -57,8 +55,6 @@ brew "docker-compose"
 brew "svn"
 # display directories as trees
 brew "tree"
-# alternative for lsl
-brew "exa"
 # alternative to cat
 brew "bat"
 # gnu coreutils useful for scripts
@@ -110,6 +106,8 @@ brew "openssl@1.1"
 brew "php"
 # faster and smarter cd command written in rust
 brew "zoxide"
+# nicer version of ls
+brew "lsd"
 
 # automation and search
 cask "alfred"
