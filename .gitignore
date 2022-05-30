@@ -13,6 +13,9 @@
 !.color_aliases
 !.config/
 .config/*
+!.config/bat/
+.config/bat/*
+!.config/bat/config
 !.config/direnv/direnvrc
 !.config/kitty/
 .config/kitty/*
