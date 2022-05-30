@@ -1,8 +1,9 @@
 # This file manages all the applications on a mac. Its used by bootstrap.sh
 # For syntax go to https://github.com/Homebrew/homebrew-bundle
 
-tap "homebrew/cask-fonts"
+tap "cantino/mcfly"
 tap "homebrew/cask"
+tap "homebrew/cask-fonts"
 tap "homebrew/services"
 tap "microsoft/mssql-release"
 
@@ -69,6 +70,8 @@ brew "asdf"
 # ffmpeg for transforming videos
 # args from https://gist.github.com/Vestride/278e13915894821e1d6f
 brew "ffmpeg"
+# shell search that uses a neural network
+brew "mcfly"
 # terminal spotify player
 brew "spotify-tui"
 # background spotify daemon (broken until https://github.com/Spotifyd/spotifyd/issues/719 is resolved)
@@ -105,6 +108,8 @@ brew "msodbcsql17"
 brew "openssl@1.1"
 # php for spotify mini
 brew "php"
+# faster and smarter cd command written in rust
+brew "zoxide"
 
 # automation and search
 cask "alfred"
