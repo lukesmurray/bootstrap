@@ -7,10 +7,7 @@
 # Generate this list with `yadm list -a | pbcopy`
 # TODO(lukemurray): figure out how to generate directories as well
 !.Brewfile
-!.aliases
-!.asdfrc
-!.bin/.gitkeep
-!.color_aliases
+!.Brewfile.lock.json
 !.config/
 .config/*
 !.config/bat/
@@ -31,8 +28,6 @@
 !.config/yadm/encrypt
 !.default-python-packages
 !.duti
-!.exports
-!.functions
 !.gitconfig
 !.github/
 !.gitignore
@@ -54,4 +49,3 @@
 .vscode/*
 !.vscode/settings.json
 !.zshrc
-!Brewfile.lock.json
