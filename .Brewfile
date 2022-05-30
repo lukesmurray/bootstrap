@@ -123,6 +123,8 @@ cask "balenaetcher"
 cask "dash"
 # sql client
 cask "datagrip"
+# autocomplete for the terminal
+cask "fig"
 # less blue light at night
 cask "flux"
 # browser
