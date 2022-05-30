@@ -33,6 +33,9 @@ Casks are used to install closed source or GUI-only programs.
 
 ## .config/direnv/direnvrc
 
+Config file for direnv.
+See notes below for how direnv works.
+
 ## .config/kitty/kitty.conf
 
 ## .config/kitty/theme.conf
@@ -56,6 +59,9 @@ Can be executed using `yadm bootstrap`.
 
 ## .duti
 
+From the duti man page.
+Read the comments in the file to see how it works.
+
 ## .envrc
 
 Defines variables used to configure programs using
@@ -70,9 +76,21 @@ Also defines environment variables such as `path` and `fpath`.
 
 ## .github/README.md
 
+Readme for this repository
+
+## .github/toc.md
+
+The file you are reading
+
 ## .gitignore
 
+Git ignore for this directory.
+Very strict, otherwise editing dotfiles in the home directory will freeze vscode.
+
 ## .gitignore_global
+
+Global git ignore.
+Set as `git config --global core.excludesfile`.
 
 ## .gnupg/gpg-agent.conf
 
@@ -175,3 +193,17 @@ direnv edit
 ## lsd
 
 Drop in replacement to `ls` that shows more information about files.
+
+## hub
+
+## mas
+
+## git-delta
+
+## gpp
+
+## yadm
+
+## git
+
+## mackup

@@ -173,10 +173,6 @@ cask "bitwarden"
 cask "firefox"
 # prototyping application
 cask "figma"
-# gui for mysql
-cask "mysqlworkbench"
-# a better gui for mysql
-cask "sequel-ace"
 
 # simpler bluetooth connections
 mas "Toothfairy", id: 1191449274

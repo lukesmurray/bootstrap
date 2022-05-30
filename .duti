@@ -1,6 +1,50 @@
-com.microsoft.VSCode    com.netscape.javascript-source    viewer
-com.microsoft.VSCode    com.netscape.javascript-source    editor
-com.microsoft.VSCode    public.plain-text    editor
-com.microsoft.VSCode    public.plain-text    viewer 
-com.microsoft.VSCode    public.text    editor
-com.microsoft.VSCode    public.text    viewer
+# FILE FORMAT
+# A settings file is made up of lines with the following format:
+# 
+# 	app_id    UTI    role
+#
+# Empty lines and lines starting with a # are ignored.
+# Lines must be separated by tabs and the file must end with a newline.
+# 
+# The app_id is a bundle ID representing the application that will act as the handler for documents associated with UTI.  For example:
+# 
+# 	com.apple.Safari    public.html    all
+# 
+# would cause duti to set Safari as the default handler in all situations for HTML documents.  A settings file can also contain lines with this
+# format:
+# 
+# 	app_id    url_scheme
+# 
+# In this case, app_id is again a bundle ID, this time for the application that will act as the default handler for url_scheme.  For example:
+# 
+# 	org.mozilla.Firefox     ftp
+# 
+# would cause duti to set Firefox as the handler for "ftp://" URLs.
+
+# ROLES
+# Valid roles are defined as follows
+# all                application handles all roles for the given UTI.
+# viewer             application handles reading and displaying documents with the given UTI.
+# editor             application can manipulate and save the item. Implies viewer.
+# shell              application can execute the item.
+# none               application cannot open the item, but provides an icon for the given UTI.
+
+# FINDING APP IDS
+# To find the app id of an application you can use the following command
+
+# lsappinfo list | rg --multiline '("[^"]*?") ASN:.*\n.*bundleID=("[^"]*?")' --replace '$1 $2' --only-matching | sort | fzf
+
+# lsappinfo lists all application state and we use ripgrep to extract the app name and bundle identifiers
+
+# FINDING UTIS
+# To find UTIS check apples list of utis
+# https://developer.apple.com/documentation/uniformtypeidentifiers/system_declared_uniform_type_identifiers
+
+
+
+# make vscode open javascript files
+com.microsoft.VSCode	com.netscape.javascript-source		editor
+# make vscode open text files
+com.microsoft.VSCode	public.text							editor
+# make google crhome open pdf files
+com.google.Chrome		com.adobe.pdf						editor

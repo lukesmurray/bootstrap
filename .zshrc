@@ -287,6 +287,15 @@ zinit ice depth=1 wait lucid atinit'eval "$(direnv hook zsh)"'
 zinit load zdharma-continuum/null
 
 ########################################
+# duti
+
+# set default applications for file types
+########################################
+
+zinit ice depth=1 wait lucid atinit'duti $HOME/.duti'
+zinit load zdharma-continuum/null
+
+########################################
 # asdf
 
 # manage multiple runtime versions with a single cli tool
