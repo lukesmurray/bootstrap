@@ -11,7 +11,11 @@
 !.asdfrc
 !.bin/.gitkeep
 !.color_aliases
+!.config/
+.config/*
 !.config/direnv/direnvrc
+!.config/kitty/
+.config/kitty/*
 !.config/kitty/kitty.conf
 !.config/kitty/theme.conf
 !.config/kitty/zoom_toggle.py

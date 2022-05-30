@@ -1,6 +1,12 @@
 #!/usr/bin/env zsh
 
 ########################################
+# fig pre block
+########################################
+
+. "$HOME/.fig/shell/zshrc.pre.zsh"
+
+########################################
 # powerlevel10k instant prompt
 ########################################
 
@@ -106,14 +112,6 @@ zinit light zsh-users/zsh-autosuggestions
 zinit ice depth=1 wait lucid blockf atpull'zinit creinstall -q .'
 zinit light zsh-users/zsh-completions
 
-# really cool but doesn't seem to play well with vscode's terminal
-# ########################################
-# # zsh-autocomplete
-# ########################################
-
-# zinit ice depth=1 wait lucid blockf atpull'zinit creinstall -q .'
-# zinit light marlonrichert/zsh-autocomplete
-
 ########################################
 # zsh-syntax-highlighting
 ########################################
@@ -158,3 +156,8 @@ export MCFLY_FUZZY=2
 # save up to 1 billion entries in mcfly database
 export MCFLY_HISTORY_LIMIT=1000000000
 
+########################################
+# fig post block
+########################################
+
+. "$HOME/.fig/shell/zshrc.post.zsh"
