@@ -38,13 +38,23 @@ See notes below for how direnv works.
 
 ## .config/kitty/kitty.conf
 
+<!-- TODO(lukemurray): document -->
+
 ## .config/kitty/theme.conf
+
+<!-- TODO(lukemurray): document -->
 
 ## .config/kitty/zoom_toggle.py
 
+<!-- TODO(lukemurray): document -->
+
 ## .config/spotify-tui/config.yml
 
+<!-- TODO(lukemurray): document -->
+
 ## .config/spotifyd/spotifyd.conf
+
+<!-- TODO(lukemurray): document -->
 
 ## .config/yadm/bootstrap
 
@@ -55,7 +65,11 @@ Can be executed using `yadm bootstrap`.
 
 ## .config/yadm/encrypt
 
+<!-- TODO(lukemurray): document -->
+
 ## .default-python-packages
+
+<!-- TODO(lukemurray): document -->
 
 ## .duti
 
@@ -73,6 +87,8 @@ export VARNAME='value'
 Also defines environment variables such as `path` and `fpath`.
 
 ## .gitconfig
+
+<!-- TODO(lukemurray): document -->
 
 ## .github/README.md
 
@@ -94,15 +110,27 @@ Set as `git config --global core.excludesfile`.
 
 ## .gnupg/gpg-agent.conf
 
+<!-- TODO(lukemurray): document -->
+
 ## .hushlogin
+
+<!-- TODO(lukemurray): document -->
 
 ## .inputrc
 
+<!-- TODO(lukemurray): document -->
+
 ## .local/share/yadm/archive
+
+<!-- TODO(lukemurray): document -->
 
 ## .mackup.cfg
 
+<!-- TODO(lukemurray): document -->
+
 ## .macos
+
+<!-- TODO(lukemurray): document -->
 
 ## .p10k.zsh
 
@@ -111,11 +139,11 @@ Use this file to control the zsh prompt.
 
 ## .phoenix.js
 
+<!-- TODO(lukemurray): document -->
+
 ## .ssh/config
 
-## .tmux.conf
-
-## .tmux.conf.local
+<!-- TODO(lukemurray): document -->
 
 ## .tool-versions
 
@@ -196,14 +224,28 @@ Drop in replacement to `ls` that shows more information about files.
 
 ## hub
 
+<!-- TODO(lukemurray): document -->
+
 ## mas
+
+<!-- TODO(lukemurray): document -->
 
 ## git-delta
 
-## gpp
+<!-- TODO(lukemurray): document -->
+
+## gpg
+
+<!-- TODO(lukemurray): document -->
 
 ## yadm
 
+<!-- TODO(lukemurray): document -->
+
 ## git
 
+<!-- TODO(lukemurray): document -->
+
 ## mackup
+
+<!-- TODO(lukemurray): document -->
