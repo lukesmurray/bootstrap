@@ -6,13 +6,19 @@
 # Lists all non-ignored files in the dotfiles directory
 # Generate this list with `yadm list -a | pbcopy`
 # TODO(lukemurray): figure out how to generate directories as well
+
 !.Brewfile
 !.Brewfile.lock.json
+# don't ignore config directory
 !.config/
+# ignore subpaths of config directory (this pattern repeats for all subpaths)
 .config/*
 !.config/bat/
 .config/bat/*
 !.config/bat/config
+!.config/direnv/
+.config/direnv/*
+!.config/direnv/direnvrc
 !.config/lsd/
 .config/lsd/*
 !.config/lsd/config.yaml

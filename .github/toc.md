@@ -31,14 +31,6 @@ Casks are used to install closed source or GUI-only programs.
 | remove installed casks not listed in brewfile        | brew bundle cleanup --force          |
 | remove installed casks not listed in global brewfile | brew bundle cleanup --global --force |
 
-## .aliases
-
-## .asdfrc
-
-## .bin/.gitkeep
-
-## .color_aliases
-
 ## .config/direnv/direnvrc
 
 ## .config/kitty/kitty.conf
@@ -56,7 +48,7 @@ Casks are used to install closed source or GUI-only programs.
 Bootstrap script for yadm.
 Can be executed using `yadm bootstrap`.
 
-<!-- TODO(lukemurray): fix the decryption step -->
+<!-- TODO(lukemurray): fix the decryption step and make self contained -->
 
 ## .config/yadm/encrypt
 
@@ -73,8 +65,6 @@ export VARNAME='value'
 ```
 
 Also defines environment variables such as `path` and `fpath`.
-
-## .functions
 
 ## .gitconfig
 
@@ -111,6 +101,9 @@ Use this file to control the zsh prompt.
 
 ## .tool-versions
 
+asdf uses `.tool-versions` to determine the version of software to use.
+The root `.tool-versions` sets the version of software used across the system by asdf unless it is overridden by a `.tool-versions` in a sub-directory.
+
 ## .zshrc
 
 We use [zinit](https://github.com/zdharma-continuum/zinit) as a plugin manager for zsh.
@@ -122,11 +115,63 @@ Zinit lets you download single files using `zinit snippet <file-url>`.
 You can use `zinit ice` before a zinit command to control what happens once the file is loaded.
 Zinit maintains a list of [ice modifiers](https://github.com/zdharma-continuum/zinit#ice-modifiers) in the readme.
 
-| Action               | Command           |
-| :------------------- | :---------------- |
-| update zinit         | zinit self-update |
-| update zinit plugins | zinit update      |
+| Action                                      | Command                     |
+| :------------------------------------------ | :-------------------------- |
+| update zinit                                | `zinit self-update`         |
+| update zinit plugins                        | `zinit update`              |
+| unload a plugin                             | `zinit unload <pluginname>` |
+| remove unused plugins or snippets from disk | `zinit delete --clean`      |
+| list completions                            | `zinit clist`               |
 
 ## Brewfile.lock.json
 
 Lockfile produced by `brew bundle install` which makes `brew bundle install` reproducible.
+
+# Tools
+
+## asdf
+
+asdf is a single command line tool for managing versions of multiple pieces of software.
+
+| Action                                | Command                                                                |
+| :------------------------------------ | :--------------------------------------------------------------------- |
+| add a plugin for a tool               | `asdf plugin add <plugin-name>`                                        |
+| install a version for a tool          | `asdf install <plugin-name> <version>`                                 |
+| the latest version                    | `latest` can be used as a synonym for latest version across asdf.      |
+| set a global version of a tool        | `asdf global <plugin-name> <version>`. Modifies `~/.tool-versions`.    |
+| set a local version of a tool         | `asdf local <plugin-name> <version>`. Modifies `${PWD}/.tool-versions` |
+| install all tools in `.tool-versions` | `asdf install` in directory containing `.tool-versions` file           |
+| update all plugins                    | `asdf plugin update --all`                                             |
+| list currently installed plugins      | `asdf plugin-list`                                                     |
+| use direnv version of tool            | `asdf direnv local <plugin-name> <version>`                            |
+
+## direnv
+
+Helps you configure per directory environments.
+Before each prompt direnv checks for a `.envrc` file in the current and parent directories.
+If the file exists it is loaded into a **bash** sub-shell and all exported variables are made available to the current shell.
+Direnv provides a stdlib of functions available to use in `.envrc` documented in [direnv-stdlib](https://github.com/direnv/direnv/blob/master/man/direnv-stdlib.1.md).
+The most useful function is `layout <type>` which can be used to set up a common project layout.
+
+_Example Python Project Setup_
+
+```zsh
+# set up the version of python for the project
+asdf direnv local python <version>
+# open .envrc in $EDITOR
+direnv edit
+# edit the .envrc to add `layout python` below `use asdf`
+
+# final envrc
+# use asdf
+# layout python
+```
+
+| Action                                                         | Command          |
+| :------------------------------------------------------------- | :--------------- |
+| allow the envrc in the current directory                       | `direnv allow .` |
+| edit the .envrc file in a directory and automatically allow it | `direnv edit`    |
+
+## lsd
+
+Drop in replacement to `ls` that shows more information about files.
