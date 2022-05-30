@@ -15,6 +15,8 @@ brew "git"
 brew "fzf"
 # faster find
 brew "fd"
+# per directory environments
+brew "direnv"
 # code search
 brew "ag"
 # faster grep
