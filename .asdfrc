@@ -1,2 +1,0 @@
-# enable legacy version files such as .nvmrc and .node_version
-legacy_version_file = yes
