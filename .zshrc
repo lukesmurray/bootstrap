@@ -7,6 +7,13 @@
 . "$HOME/.fig/shell/zshrc.pre.zsh"
 
 ########################################
+# Bash completion compatability
+########################################
+
+autoload -U bashcompinit
+bashcompinit
+
+########################################
 # Aliases
 ########################################
 
@@ -18,9 +25,6 @@ alias ls='lsd'
 
 # use bat instead of cat
 alias cat='bat'
-
-# add kitty shell integration when using ssh to remote hosts
-alias ssh='kitty +kitten ssh'
 
 ########################################
 # exports
@@ -75,8 +79,7 @@ clone() {
     # mkdir and clone if it does not exist
     mkdir -p "$GITHUB_ROOT/$hostname/"
     [ -d "$GITHUB_ROOT/$hostname/$reponame" ] || git clone "$url" "$GITHUB_ROOT/$hostname/$reponame"
-    echo_ok "go get to work"
-    echo_ok "cd $GITHUB_ROOT/$hostname/$reponame"
+    cd $GITHUB_ROOT/$hostname/$reponame
     echo "cd $GITHUB_ROOT/$hostname/$reponame" | pbcopy
 }
 
@@ -213,6 +216,37 @@ zinit light romkatv/powerlevel10k
 
 zinit ice depth=1 wait"!" lucid atload"_zsh_autosuggest_start"
 zinit light zsh-users/zsh-autosuggestions
+
+########################################
+# oh my zsh plugins
+########################################
+
+# add a million git aliases
+zinit ice depth=1 wait lucid blockf
+zinit snippet OMZP::git
+
+# load asdf and asdf completions
+zinit ice depth=1 wait lucid blockf
+zinit snippet OMZP::asdf
+
+# press escape key twice after a command fails to run becaus of sudo
+# the command will reappear prefixed by sudo
+zinit ice depth=1 wait lucid blockf
+zinit snippet OMZP::sudo
+
+# load ssh-agent in quiet mode
+zstyle :omz:plugins:ssh-agent quiet yes
+
+# start ssh-agent
+zinit ice depth=1 wait lucid blockf
+zinit snippet OMZP::ssh-agent
+
+########################################
+# zsh-completions
+########################################
+
+zinit ice depth=1 wait lucid blockf atpull'zinit creinstall -q .'
+zinit light zsh-users/zsh-completions
 
 ########################################
 # zsh-syntax-highlighting

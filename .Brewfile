@@ -15,8 +15,10 @@ brew "git"
 brew "fzf"
 # faster find
 brew "fd"
+# code search
+brew "ag"
 # faster grep
-brew "rg"
+brew "ripgrep"
 # set default apps
 brew "duti"
 # store images in git
