@@ -44,13 +44,6 @@ export LC_ALL='en_US.UTF-8'
 # https://stackoverflow.com/a/42265848/96656
 export GPG_TTY=$(tty)
 
-# automatically start tmux
-export ZSH_TMUX_AUTOSTART="false"
-# don't quit the terminal when we leave tmux
-export ZSH_TMUX_AUTOQUIT="false"
-# fix the TERM variable automatically
-export ZSH_TMUX_FIXTERM="true"
-
 # don't check node js signatures
 export NODEJS_CHECK_SIGNATURES="no"
 
@@ -117,6 +110,19 @@ unheart() {
     fi
 }
 
+update_tools() {
+    # update brewfiles
+    brew bundle --global install;
+
+    # update asdf pluings
+    asdf plugin update --all;
+
+    # update zinit
+    zinit self-update;
+    # update zinit plugins and snippets
+    zinit update --all;
+}
+
 
 ########################################
 # powerlevel10k instant prompt
@@ -181,16 +187,15 @@ source "${ZINIT_HOME}/zinit.zsh"
 # zsh-vi-mode
 ########################################
 
+# zsh-vi-mode calls this function after init.
+# you can use this function to override zsh-vi-mode keybindings
 function zvm_after_init() {
-  # zsh-vi-mode calls this function after init.
-  # you can use this function to override zsh-vi-mode keybindings
-
   # use mcfly to search history
   zvm_bindkey viins '^R' mcfly-history-widget
 }
 
 zinit ice depth=1 wait lucid 
-zinit light jeffreytse/zsh-vi-mode
+zinit load jeffreytse/zsh-vi-mode
 
 # enables ctrl-p ctrl-n for next/previous history
 # enables surround plugin
@@ -203,7 +208,7 @@ zinit light jeffreytse/zsh-vi-mode
 ########################################
 
 zinit ice depth=1
-zinit light romkatv/powerlevel10k
+zinit load romkatv/powerlevel10k
 
 # To customize prompt, run `p10k configure` or edit ~/.p10k.zsh.
 [[ ! -f ~/.p10k.zsh ]] || source ~/.p10k.zsh
@@ -215,19 +220,15 @@ zinit light romkatv/powerlevel10k
 ########################################
 
 zinit ice depth=1 wait"!" lucid atload"_zsh_autosuggest_start"
-zinit light zsh-users/zsh-autosuggestions
+zinit load zsh-users/zsh-autosuggestions
 
 ########################################
 # oh my zsh plugins
 ########################################
 
-# add a million git aliases
+# add all the git aliases
 zinit ice depth=1 wait lucid blockf
 zinit snippet OMZP::git
-
-# load asdf and asdf completions
-zinit ice depth=1 wait lucid blockf
-zinit snippet OMZP::asdf
 
 # press escape key twice after a command fails to run becaus of sudo
 # the command will reappear prefixed by sudo
@@ -246,7 +247,82 @@ zinit snippet OMZP::ssh-agent
 ########################################
 
 zinit ice depth=1 wait lucid blockf atpull'zinit creinstall -q .'
-zinit light zsh-users/zsh-completions
+zinit load zsh-users/zsh-completions
+
+########################################
+# zoxide
+
+# enables jumping to directories using z
+########################################
+
+zinit ice depth=1 wait lucid atinit'eval "$(zoxide init zsh)"'
+zinit load zdharma-continuum/null
+
+# save up to 1 billion entries in zoxide database
+export _ZO_MAXAGE=1000000000
+
+########################################
+# mcfly
+
+# ctrl-r history search using a neural network
+########################################
+
+zinit ice depth=1 wait lucid atinit'eval "$(mcfly init zsh)"'
+zinit load zdharma-continuum/null
+
+# use vim keys for mcfly
+export MCFLY_KEY_SCHEME=vim
+# enable fuzzy search in mcfly
+export MCFLY_FUZZY=2
+# save up to 1 billion entries in mcfly database
+export MCFLY_HISTORY_LIMIT=1000000000
+
+########################################
+# direnv
+
+# load and unload environments based on the current directory
+########################################
+
+zinit ice depth=1 wait lucid atinit'eval "$(direnv hook zsh)"'
+zinit load zdharma-continuum/null
+
+########################################
+# asdf
+
+# manage multiple runtime versions with a single cli tool
+########################################
+
+_setup_asdf() {
+    # setup asdf hook
+    . $(brew --prefix asdf)/libexec/asdf.sh;
+
+    # list of asdf plugins to install
+    plugin_list=('direnv' 'nodejs' 'python')
+
+    # currently installed plugins (list of plugins separated by newlines)
+    currently_installed_plugins=$(asdf plugin list)
+
+    for plugin in $plugin_list; do
+
+        # if the plugin is not in the currently installed plugins list, install it
+        if ! echo "$currently_installed_plugins" | rg -q "$plugin"; then
+            echo "installing asdf plugin $plugin"
+            asdf plugin add $plugin > /dev/null 2>&1;
+
+            # asdf-direnv hook post-install step
+            if [[ $plugin = 'direnv' ]] ; then
+                asdf direnv setup --shell zsh --version system
+                echo "remember to clean up your zshrc"
+            fi
+        fi
+    done
+
+    # setup asdf-direnv hook
+    source "${XDG_CONFIG_HOME:-$HOME/.config}/asdf-direnv/zshrc"
+}
+
+zinit ice depth=1 wait lucid atinit'_setup_asdf; unfunction _setup_asdf'
+zinit load zdharma-continuum/null
 
 ########################################
 # zsh-syntax-highlighting
@@ -259,7 +335,7 @@ zinit light zsh-users/zsh-completions
 # when syntax highlighting is performed we call compinit and replay
 # any completion definiitons
 zinit ice depth=1 wait lucid atinit"ZINIT[COMPINIT_OPTS]=-C; zicompinit; zicdreplay"
-zinit light zsh-users/zsh-syntax-highlighting
+zinit load zsh-users/zsh-syntax-highlighting
 
 ########################################
 # zsh-history-substring-search
@@ -270,38 +346,16 @@ zinit light zsh-users/zsh-syntax-highlighting
 # this is the only exception. substring search can be added after zsh-syntax-highlighting
 
 zinit ice depth=1 wait lucid atload"bindkey '^[[A' history-substring-search-up; bindkey '^[[B' history-substring-search-down;"
-zinit light zsh-users/zsh-history-substring-search
-
-########################################
-# zoxide
-
-# enables jumping to directories using z
-########################################
-
-zinit ice depth=1 wait lucid atinit'eval "$(zoxide init zsh)"'
-zinit light zdharma-continuum/null
-
-# save up to 1 billion entries in zoxide database
-export _ZO_MAXAGE=1000000000
-
-########################################
-# mcfly
-
-# ctrl-r history search using a neural network
-########################################
-
-zinit ice depth=1 wait lucid atinit'eval "$(mcfly init zsh)"'
-zinit light zdharma-continuum/null
-
-# use vim keys for mcfly
-export MCFLY_KEY_SCHEME=vim
-# enable fuzzy search in mcfly
-export MCFLY_FUZZY=2
-# save up to 1 billion entries in mcfly database
-export MCFLY_HISTORY_LIMIT=1000000000
+zinit load zsh-users/zsh-history-substring-search
 
 ########################################
 # fig post block
 ########################################
 
 . "$HOME/.fig/shell/zshrc.post.zsh"
+
+
+########################################
+# END - anything added below this line should be removed and placeed
+# in scripts above
+########################################
