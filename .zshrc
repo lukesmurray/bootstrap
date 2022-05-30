@@ -322,6 +322,8 @@ setopt NO_BEEP
 
 ########################################
 # history
+
+# set up options to save zsh history
 ########################################
 
 # set the path to the file where history is saved
@@ -343,6 +345,8 @@ setopt HIST_VERIFY
 
 ########################################
 # zinit setup
+
+# start zinit
 ########################################
 
 # load zinit (cloned in bootstrap)
@@ -355,6 +359,9 @@ source "${ZINIT_HOME}/zinit.zsh"
 ########################################
 
 function zvm_after_init() {
+  # zsh-vi-mode calls this function after init.
+  # you can use this function to override zsh-vi-mode keybindings
+
   # use mcfly to search history
   zvm_bindkey viins '^R' mcfly-history-widget
 }
@@ -368,6 +375,8 @@ zinit light jeffreytse/zsh-vi-mode
 
 ########################################
 # powerlevel10k
+
+# provides a sexy and configurable prompt
 ########################################
 
 zinit ice depth=1
@@ -378,20 +387,17 @@ zinit light romkatv/powerlevel10k
 
 ########################################
 # zsh-autosuggestions
+
+# suggests commands as you type based on history and completions
 ########################################
 
 zinit ice depth=1 wait"!" lucid atload"_zsh_autosuggest_start"
 zinit light zsh-users/zsh-autosuggestions
 
 ########################################
-# zsh-completions
-########################################
-
-zinit ice depth=1 wait lucid blockf atpull'zinit creinstall -q .'
-zinit light zsh-users/zsh-completions
-
-########################################
 # zsh-syntax-highlighting
+
+# add syntax highlighting to the shell
 ########################################
 
 # zsh syntax highlighting must be added last
@@ -403,6 +409,8 @@ zinit light zsh-users/zsh-syntax-highlighting
 
 ########################################
 # zsh-history-substring-search
+
+# up-down arrow search history using current prompt as prefix
 ########################################
 
 # this is the only exception. substring search can be added after zsh-syntax-highlighting
@@ -412,6 +420,8 @@ zinit light zsh-users/zsh-history-substring-search
 
 ########################################
 # zoxide
+
+# enables jumping to directories using z
 ########################################
 
 zinit ice depth=1 wait lucid atinit'eval "$(zoxide init zsh)"'
@@ -422,6 +432,8 @@ export _ZO_MAXAGE=1000000000
 
 ########################################
 # mcfly
+
+# ctrl-r history search using a neural network
 ########################################
 
 zinit ice depth=1 wait lucid atinit'eval "$(mcfly init zsh)"'
