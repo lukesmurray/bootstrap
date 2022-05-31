@@ -190,8 +190,12 @@ source "${ZINIT_HOME}/zinit.zsh"
 # zsh-vi-mode calls this function after init.
 # you can use this function to override zsh-vi-mode keybindings
 function zvm_after_init() {
-  # use mcfly to search history
+  # bind ctrl-r to search history with mcfly
   zvm_bindkey viins '^R' mcfly-history-widget
+  zvm_bindkey vicmd '^R' mcfly-history-widget
+  # bind ctrl+alt+r to search history with fzf
+  zvm_bindkey viins '^[^R' fzf-history-widget
+  zvm_bindkey vicmd '^[^R'  fzf-history-widget
 }
 
 zinit ice depth=1 wait lucid 
@@ -296,6 +300,50 @@ zinit ice depth=1 wait lucid atinit'duti $HOME/.duti'
 zinit load zdharma-continuum/null
 
 ########################################
+# fzf
+
+# fzf provides completions and fuzzy finding for zsh
+########################################
+
+# Set fd as the default source for bare fzf commands. Respects gitignore.
+export FZF_DEFAULT_COMMAND='fd --type f'
+
+# Set fd as the default source for ctrl + t commands. Respects gitignore.
+export FZF_CTRL_T_COMMAND='fd --type f'
+
+# Use fd (https://github.com/sharkdp/fd) instead of the default find
+# command for listing path candidates.
+# - The first argument to the function ($1) is the base path to start traversal
+# - See the source code (completion.{bash,zsh}) for the details.
+_fzf_compgen_path() {
+  fd --hidden --follow --exclude ".git" . "$1"
+}
+
+# Use fd to generate the list for directory completion
+_fzf_compgen_dir() {
+  fd --type d --hidden --follow --exclude ".git" . "$1"
+}
+
+_setup_fzf() {
+    # Setup fzf
+    # ---------
+    if [[ ! "$PATH" == */usr/local/opt/fzf/bin* ]]; then
+        export PATH="${PATH:+${PATH}:}/usr/local/opt/fzf/bin"
+    fi
+
+    # Auto-completion
+    # ---------------
+    [[ $- == *i* ]] && source "/usr/local/opt/fzf/shell/completion.zsh" 2> /dev/null
+
+    # Key bindings
+    # ------------
+    source "/usr/local/opt/fzf/shell/key-bindings.zsh"
+}
+
+zinit ice depth=1 wait lucid atinit'_setup_fzf; unfunction _setup_fzf'
+zinit load zdharma-continuum/null
+
+########################################
 # asdf
 
 # manage multiple runtime versions with a single cli tool
@@ -362,7 +410,6 @@ zinit load zsh-users/zsh-history-substring-search
 ########################################
 
 . "$HOME/.fig/shell/zshrc.post.zsh"
-
 
 ########################################
 # END - anything added below this line should be removed and placeed
