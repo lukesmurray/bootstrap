@@ -38,15 +38,17 @@ See notes below for how direnv works.
 
 ## .config/kitty/kitty.conf
 
-<!-- TODO(lukemurray): document -->
+Configuration for kitty.
+Contains comments describing all the basic options.
+Also provides keybinding replication for most of the features I used in tmux.
 
 ## .config/kitty/theme.conf
 
-<!-- TODO(lukemurray): document -->
+Visual Studio Dark theme for kitty.
 
 ## .config/kitty/zoom_toggle.py
 
-<!-- TODO(lukemurray): document -->
+Implements a toggle for making a pane in Kitty take up an entire tab.
 
 ## .config/spotify-tui/config.yml
 

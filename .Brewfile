@@ -72,14 +72,6 @@ brew "asdf"
 brew "ffmpeg"
 # shell search that uses a neural network
 brew "mcfly"
-# terminal spotify player
-brew "spotify-tui"
-# background spotify daemon (broken until https://github.com/Spotifyd/spotifyd/issues/719 is resolved)
-brew "spotifyd", restart_service: :changed
-# interapplication messaging system
-brew "dbus", restart_service: :changed
-# rust lang
-brew "rust"
 # manage compile and link flags for libraries
 brew "pkg-config"
 # compile documents
@@ -98,14 +90,14 @@ brew "poppler"
 brew "bitwarden-cli"
 # delete files with a cli
 brew "ncdu"
-# access mysql
-brew "mysql-client"
 # paste images into files like pbpaste for text
 brew "pngpaste"
 # driver for connecting to sql server
 brew "msodbcsql17"
 # old openssl for msodbcsql17 bug
 brew "openssl@1.1"
+# regular open ssl cause some formulas require it
+brew "openssl@3"
 # php for spotify mini
 brew "php"
 # faster and smarter cd command written in rust
