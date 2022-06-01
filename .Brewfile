@@ -7,6 +7,8 @@ tap "homebrew/cask-fonts"
 tap "homebrew/services"
 tap "microsoft/mssql-release"
 
+# use latest version of less
+brew "less"
 # bash 4
 brew "bash"
 # version control
