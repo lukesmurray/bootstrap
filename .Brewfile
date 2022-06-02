@@ -7,6 +7,8 @@ tap "homebrew/cask-fonts"
 tap "homebrew/services"
 tap "microsoft/mssql-release"
 
+# used for syntax highlighting in less
+brew "source-highlight"
 # use latest version of less
 brew "less"
 # bash 4
