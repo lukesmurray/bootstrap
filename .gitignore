@@ -46,6 +46,8 @@
 !.macos
 !.p10k.zsh
 !.phoenix.js
+!.ssh/
+.ssh/*
 !.ssh/config
 !.tool-versions
 !.vscode/
