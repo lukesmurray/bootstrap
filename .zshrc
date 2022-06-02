@@ -7,11 +7,81 @@
 . "$HOME/.fig/shell/zshrc.pre.zsh"
 
 ########################################
-# Bash completion compatability
+# GENERAL ENVIRONMENT VARIABLES
+# 
+# these environment variables are used to control the behavior of widely used
+# tools or tools set up in other environments
+# as a general rule if a tool is set up later in this (for example fzf)
+# then we set the environment variables next to the context of the tool.
 ########################################
 
-autoload -U bashcompinit
-bashcompinit
+# follow xdg base directory specification
+# https://specifications.freedesktop.org/basedir-spec/basedir-spec-latest.html
+
+# set the base directory where user-specific data files are stored
+export XDG_DATA_HOME="$HOME/.local/share"
+
+# set the base directory where user-specific configuration files are stored
+export XDG_CONFIG_HOME="$HOME/.config"
+
+# set the base directory where user specific state files are stored
+# this is for non-portable data or data that is 
+export XDG_STATE_HOME="$HOME/.local/state"
+
+# set the base directory where user-specific cache files are stored
+export XDG_CACHE_HOME="$HOME/.cache"
+
+# make code the default editor
+export EDITOR="code"
+
+# Prefer US English and use UTF-8.
+export LANG='en_US.UTF-8'
+export LC_ALL='en_US.UTF-8'
+
+# make less the default pager
+export PAGER=less
+
+# Avoid issues with `gpg` as installed via Homebrew.
+# https://stackoverflow.com/a/42265848/96656
+export GPG_TTY=$(tty)
+
+# Make Python use UTF-8 encoding for output to stdin, stdout, and stderr.
+export PYTHONIOENCODING='UTF-8'
+
+# don't check node js signatures
+export NODEJS_CHECK_SIGNATURES="no"
+
+# set default options for less
+# --raw-control-chars enables viewing color codes
+# --status-column enables a status column on the left to see marks, highlights, and new lines
+# --LINE-NUMBERS enables the display of line numbers on the left
+# --line-num-width sets the width of the line numbers column (default is 7 for files with millions of lines but thats way too much wasted space)
+# --tabs sets the width of tab stops (default is 8)
+# --HILITE-UNREAD adds a flash in the status bar to the first unread line when we move forward by more than 1 line
+# --incsearch advances to the next match as you type
+# --mouse adds mouse support
+# --use-color enables the use of color across less (e.g. line numbers, marks, hilite-unread)
+# --LONG-PROMPT shows additional information in the prompt (line numbers)
+# --ignore-case ignores case when searching except when you use upercase
+export LESS="--raw-control-chars --status-column --LINE-NUMBERS --line-num-width=4 --tabs=2 --HILITE-UNREAD --incsearch --mouse --use-color --LONG-PROMPT --ignore-case"
+
+LESSPIPE="$(brew --prefix)/bin/src-hilite-lesspipe.sh"
+export LESSOPEN="| ${LESSPIPE} %s"
+
+########################################
+# modify PATH
+########################################
+# append with `path+=('/value')`
+# prepend with `path=('/value' $path)`
+
+# add homebrew sbin to path
+path+=('/usr/local/sbin')
+
+# add .bin to path. this is where we store custom functions
+path+=("$HOME/.bin")
+
+# export modified path to subprocesses
+export PATH
 
 ########################################
 # Aliases
@@ -25,30 +95,6 @@ alias ls='lsd'
 
 # use bat instead of cat
 alias cat='bat'
-
-########################################
-# exports
-########################################
-
-# make code the default editor
-export EDITOR="code"
-
-# Make Python use UTF-8 encoding for output to stdin, stdout, and stderr.
-export PYTHONIOENCODING='UTF-8'
-
-# Prefer US English and use UTF-8.
-export LANG='en_US.UTF-8'
-export LC_ALL='en_US.UTF-8'
-
-# Avoid issues with `gpg` as installed via Homebrew.
-# https://stackoverflow.com/a/42265848/96656
-export GPG_TTY=$(tty)
-
-# don't check node js signatures
-export NODEJS_CHECK_SIGNATURES="no"
-
-# add sbin to path (homebrew)
-export PATH="/usr/local/sbin:$PATH"
 
 ########################################
 # functions
@@ -123,6 +169,21 @@ update_tools() {
     zinit update --all;
 }
 
+# open up a man page in preview
+function man_preview() { 
+    man -t "$1" | open -fa Preview 
+}
+
+function man_code() {
+    man "$1" | col -bx | open -fa Visual\ Studio\ Code.app
+}
+
+########################################
+# Support Bash completions in zsh
+########################################
+
+autoload -U bashcompinit
+bashcompinit
 
 ########################################
 # powerlevel10k instant prompt
@@ -131,8 +192,8 @@ update_tools() {
 # Enable Powerlevel10k instant prompt. Should stay close to the top of ~/.zshrc.
 # Initialization code that may require console input (password prompts, [y/n]
 # confirmations, etc.) must go above this block; everything else may go below.
-if [[ -r "${XDG_CACHE_HOME:-$HOME/.cache}/p10k-instant-prompt-${(%):-%n}.zsh" ]]; then
-  source "${XDG_CACHE_HOME:-$HOME/.cache}/p10k-instant-prompt-${(%):-%n}.zsh"
+if [[ -r "${XDG_CACHE_HOME}/p10k-instant-prompt-${(%):-%n}.zsh" ]]; then
+  source "${XDG_CACHE_HOME}/p10k-instant-prompt-${(%):-%n}.zsh"
 fi
 
 ########################################
@@ -178,8 +239,17 @@ setopt HIST_VERIFY
 # start zinit
 ########################################
 
+# set the home directory
+export ZINIT_HOME="${XDG_DATA_HOME}/zinit/zinit.git"
+
+# if zinit home directory doesn't exist, or is empty, clone zinit
+if [[ ! (-d "${ZINIT_HOME}" && -n "$(ls --almost-all "${ZINIT_HOME}")") ]] ; then
+    echo "zinit not found. installing..."
+    mkdir -p "$(dirname $ZINIT_HOME)"
+    git clone https://github.com/zdharma-continuum/zinit.git "${ZINIT_HOME}"
+fi
+
 # load zinit (cloned in bootstrap)
-ZINIT_HOME="${XDG_DATA_HOME:-${HOME}/.local/share}/zinit/zinit.git"
 source "${ZINIT_HOME}/zinit.zsh"
 
 # disabled because it overwrites mcfly ctrl-r
@@ -197,6 +267,15 @@ function zvm_after_init() {
   zvm_bindkey viins '^[^R' fzf-history-widget
   zvm_bindkey vicmd '^[^R'  fzf-history-widget
 }
+
+# super fast normal mode switching
+# tell ZSH to wait 0.01 seconds for next key when reading multi bound character sequences
+# this is overridden by zsh-vi-mode to 1 anyway but set here for clarity
+export KEYTIMEOUT=1
+# tell ZVM to wait 0.3 seconds for next key when reading escape key
+export ZVM_ESCAPE_KEYTIMEOUT=0.03
+export ZVM_KEYTIMEOUT=0.03
+
 
 zinit ice depth=1 wait lucid 
 zinit load jeffreytse/zsh-vi-mode
@@ -375,7 +454,7 @@ _setup_asdf() {
     done
 
     # setup asdf-direnv hook
-    source "${XDG_CONFIG_HOME:-$HOME/.config}/asdf-direnv/zshrc"
+    source "${XDG_CONFIG_HOME}/asdf-direnv/zshrc"
 }
 
 zinit ice depth=1 wait lucid atinit'_setup_asdf; unfunction _setup_asdf'
