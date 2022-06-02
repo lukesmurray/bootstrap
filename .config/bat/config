@@ -1,8 +1,27 @@
-# Show line numbers, Git modifications and file header (but no grid)
---style="numbers,changes,header"
+# This is `bat`s configuration file. Each line either contains a comment or
+# a command-line option that you want to pass to `bat` by default. You can
+# run `bat --help` to get a list of all possible configuration options.
 
-# Use italic text on the terminal (not supported on all terminals)
+# Specify desired highlighting theme (e.g. "TwoDark"). Run `bat --list-themes`
+# for a list of all available themes
+--theme="Visual Studio Dark+"
+
+# Enable this to use italic text on the terminal. This is not supported on all
+# terminal emulators (like tmux, by default):
 --italic-text=always
 
-#  use visual studio dark theme
---theme="Visual Studio Dark+"
+# Set the tab width to T spaces. Use a width of 0 to pass tabs through directly
+--tabs=2
+
+# set terminal width to actaul_width - 2 to accomodate for the Less status bar
+# width. without this, bat assumes the terminal width is 2 characters wider
+# than it is and lines will wrap strangely
+--terminal-width=-2
+
+# use less as the pager
+# --line-numbers disables line numbers (BAT handles these internally)
+# --quit-if-one-screen closes less but keeps output on screen if the output takes up less than one screen
+--pager="less --line-numbers --quit-if-one-screen"
+
+# configure elements which are displayed in addition to file content
+--style="changes,header-filename,header-filesize,grid,numbers,snip"
