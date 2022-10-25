@@ -69,15 +69,12 @@ if brew bundle check --global; then
 else
     echo_warn "Syncing brew packages with brew bundle"
     brew bundle install --global
-    brew bundle --force cleanup --global
-    brew cleanup
 fi
 
 # npm
 # list of packages to install globally with npm
 NPM_PACKAGES=(
     yarn
-    @jarred/git-peek
 )
 if command_exists npm; then
     echo_warn "Updating npm and globally installed npm packages"
@@ -119,7 +116,9 @@ if command_exists zinit; then
     zinit self-update
 else
     echo_warn "Installing zinit."
-    sh -c "$(curl -fsSL https://raw.githubusercontent.com/zdharma/zinit/master/doc/install.sh)"
+    ZINIT_HOME="${XDG_DATA_HOME:-${HOME}/.local/share}/zinit/zinit.git"
+    mkdir -p "$(dirname $ZINIT_HOME)"
+    git clone https://github.com/zdharma-continuum/zinit.git "$ZINIT_HOME"
 fi
 
 # update zinit plugins
@@ -165,7 +164,7 @@ if [[ $github_email ]]; then
         if [[ ! -f ~/.ssh/id_ed25519.key ]]; then
             echo_warn "Setting up private ssh key."
 
-            ssh-keygen -t ed25519 -C ${github_email} -f ~/.ssh/id_ed25519.key <<<y
+            ssh-keygen -t ed25519 -C "${github_email}" -f ~/.ssh/id_ed25519.key <<<y
         else
             echo_ok "Found existing ssh key"
         fi
@@ -255,7 +254,7 @@ EOF
         if ask "Sign git commits with gpg key?" Y; then
             echo_ok "enabling commit signing"
             # set the signing key in the git config
-            git config --file ~/.gitconfig.local user.signingkey $GPG_KEY_ID
+            git config --file ~/.gitconfig.local user.signingkey "$GPG_KEY_ID"
             # enable gpg signing
             git config --file ~/.gitconfig.local commit.gpgsign true
         else
@@ -292,9 +291,9 @@ echo_warn "********************** MANUAL STEPS **********************"
 echo_warn "********************** First Install Only **********************"
 echo_warn "You may want to remap keys in System Preferences → Keyboard → Modifier Keys"
 echo_warn "Follow the instructions to install powerlevel10k fonts https://github.com/romkatv/powerlevel10k#manual-font-installation"
-echo_warn "Upload gpg key from "${HOME}/.gnupg/public.key" to github https://docs.github.com/en/github/authenticating-to-github/adding-a-new-gpg-key-to-your-github-account"
+echo_warn "Upload gpg key from ""${HOME}"/.gnupg/public.key" to github https://docs.github.com/en/github/authenticating-to-github/adding-a-new-gpg-key-to-your-github-account"
 echo_warn "\tpbcopy < ~/.gnupg/public.key"
-echo_warn "Upload ssh key from "${HOME}/.ssh/id_ed25519.key.pub" to github https://docs.github.com/en/github/authenticating-to-github/adding-a-new-ssh-key-to-your-github-account"
+echo_warn "Upload ssh key from ""${HOME}"/.ssh/id_ed25519.key.pub" to github https://docs.github.com/en/github/authenticating-to-github/adding-a-new-ssh-key-to-your-github-account"
 echo_warn "\tpbcopy < ~/.ssh/id_ed25519.key.pub"
 echo_warn "Setup your spotify password"
 echo_warn "\tsecurity add-generic-password -s spotifyd -D rust-keyring -a 1277366837 -w"

@@ -4,7 +4,7 @@
 # fig pre block
 ########################################
 
-. "$HOME/.fig/shell/zshrc.pre.zsh"
+[[ -f "$HOME/.fig/shell/zshrc.pre.zsh" ]] && builtin source "$HOME/.fig/shell/zshrc.pre.zsh"
 
 ########################################
 # GENERAL ENVIRONMENT VARIABLES
@@ -79,6 +79,9 @@ path+=('/usr/local/sbin')
 
 # add .bin to path. this is where we store custom functions
 path+=("$HOME/.bin")
+
+# add rust to the path
+path+=("$HOME/.cargo/bin")
 
 # export modified path to subprocesses
 export PATH
@@ -488,9 +491,10 @@ zinit load zsh-users/zsh-history-substring-search
 # fig post block
 ########################################
 
-. "$HOME/.fig/shell/zshrc.post.zsh"
-
 ########################################
 # END - anything added below this line should be removed and placeed
 # in scripts above
 ########################################
+
+# Fig post block. Keep at the bottom of this file.
+[[ -f "$HOME/.fig/shell/zshrc.post.zsh" ]] && builtin source "$HOME/.fig/shell/zshrc.post.zsh"

@@ -109,6 +109,8 @@
 	default = simple
 	# Make `git push` push relevant annotated tags when pushing branches out.
 	followTags = true
+	# Make git push automatically choose the correct branch.
+	autoSetupRemote = true
 
 [pull]
 

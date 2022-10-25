@@ -90,8 +90,6 @@ brew "tldr"
 brew "rga"
 # extract text from pdfs for rga
 brew "poppler"
-# bitwarden cli
-brew "bitwarden-cli"
 # delete files with a cli
 brew "ncdu"
 # paste images into files like pbpaste for text
@@ -115,8 +113,6 @@ cask "alfred"
 cask "anki"
 # backups
 cask "backblaze"
-# great software for creating bootable usbs (always forget what this is called)
-cask "balenaetcher"
 # developer documentation
 cask "dash"
 # sql client
@@ -133,8 +129,6 @@ cask "kap"
 cask "kitty"
 # keyboard window management
 cask "rectangle"
-# time tracking
-cask "rescuetime"
 # communicaiton
 cask "slack"
 # music
@@ -153,24 +147,10 @@ cask "phoenix"
 cask "docker"
 # editor font
 cask "font-roboto-mono-for-powerline"
-# hide menu bar icons
-cask "vanilla"
 # control monitor brightness
 cask "monitorcontrol"
-# access local host on browserstack
-cask "browserstacklocal"
-# vms for testing ie11
-cask "vmware-fusion"
-# sqlite db browser
-cask "db-browser-for-sqlite"
-# free password manager
-cask "bitwarden"
-# alternative browser
-cask "firefox"
 # prototyping application
 cask "figma"
 
-# simpler bluetooth connections
-mas "Toothfairy", id: 1191449274
-# add block for safari
+# ad block for safari
 mas "AdGuard for Safari", id: 1440147259

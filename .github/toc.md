@@ -22,14 +22,14 @@ Once you have the tap installed you can install formula and casks from the tap.
 Homebrew casks are an extension of homebrew used to install macOS native apps.
 Casks are used to install closed source or GUI-only programs.
 
-| Action                                               | Command                              |
-| :--------------------------------------------------- | :----------------------------------- |
-| install everything in brewfile                       | brew bundle install                  |
-| install everything in global brewfile `~/.Brewfile`  | brew bundle install --global         |
-| list installed casks not listed in brewfile          | brew bundle cleanup                  |
-| list installed casks not listed in global brewfile   | brew bundle cleanup --cleanup        |
-| remove installed casks not listed in brewfile        | brew bundle cleanup --force          |
-| remove installed casks not listed in global brewfile | brew bundle cleanup --global --force |
+| Action                                               | Command                                    |
+| :--------------------------------------------------- | :----------------------------------------- |
+| install everything in brewfile                       | ACCEPT_EULA=y brew bundle install          |
+| install everything in global brewfile `~/.Brewfile`  | ACCEPT_EULA=y brew bundle install --global |
+| list installed casks not listed in brewfile          | brew bundle cleanup                        |
+| list installed casks not listed in global brewfile   | brew bundle cleanup --cleanup              |
+| remove installed casks not listed in brewfile        | brew bundle cleanup --force                |
+| remove installed casks not listed in global brewfile | brew bundle cleanup --global --force       |
 
 ## .config/direnv/direnvrc
 
@@ -251,3 +251,23 @@ Drop in replacement to `ls` that shows more information about files.
 ## mackup
 
 <!-- TODO(lukemurray): document -->
+
+# Important paths
+
+We follow the pattern implemented by Gnome and Ubuntu.
+
+$XDG_DATA_HOME defines the base directory relative to which user-specific data files should be stored. If $XDG_DATA_HOME is either not set or empty, a default equal to $HOME/.local/share should be used.
+
+$XDG_CONFIG_HOME defines the base directory relative to which user-specific configuration files should be stored. If $XDG_CONFIG_HOME is either not set or empty, a default equal to $HOME/.config should be used.
+
+$XDG_STATE_HOME defines the base directory relative to which user-specific state files should be stored. If $XDG_STATE_HOME is either not set or empty, a default equal to $HOME/.local/state should be used.
+
+User-specific executable files may be stored in $HOME/.local/bin.
+
+$XDG_CACHE_HOME defines the base directory relative to which user-specific non-essential data files should be stored. If $XDG_CACHE_HOME is either not set or empty, a default equal to $HOME/.cache should be used.
+
+# TODOs
+
+- add setting for .gitkeep in global
+- understand https://zsh.sourceforge.io/Doc/Release/Expansion.html#Process-Substitution
+- read the git book
